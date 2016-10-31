@@ -3,7 +3,9 @@
   "private": true,
   "dependencies": {
     "bootstrap-sass": "~3.3.5",
-    "modernizr": "~2.8.1"
+    "modernizr": "~2.8.1",
+    "pubnub": "^4.2.1",
+    "pubnub-angular": "^4.0.0"
   },
   "overrides": {
     "bootstrap-sass": {

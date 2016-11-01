@@ -22,26 +22,28 @@
     <script src="/bower_components/modernizr/modernizr.js"></script>
     <!-- endbuild -->
   </head>
-  <body class="login">
+  <body class="login" ng-app="chataApp">
     <!--[if lt IE 10]>
       <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <article class="container">
+    <article class="container" ng-controller="LoginController">
       <section class="page">
         <div class="holder">
           <img src="img/logo.png" alt="Chata logo">
           <h1>Login</h1>
-          <form method="POST">
+          <form method="POST" ng-submit="submit()">
+            <p class="text-danger" ng-if="error.show"><small>{{error.message}}</small></p>
             <div class="form-group">
               <label class="sr-only" for="loginEmail">Email address</label>
-              <input type="email" class="form-control" id="loginEmail" placeholder="Email">
+              <input type="email" class="form-control" id="loginEmail" placeholder="Email" ng-model="usr_email" required>
             </div>
             <div class="form-group">
               <label class="sr-only" for="loginPassword">Password</label>
-              <input type="password" class="form-control" id="loginPassword" placeholder="Password">
+              <input type="password" class="form-control" id="loginPassword" placeholder="Password" ng-model="usr_password" required>
             </div>
-            <button type="submit" class="btn btn-success">Login</button>
+            <a href="/register.html" class="btn btn-link">Register</a>
+            <button type="submit" class="btn btn-success pull-right">Login</button>
           </form>
         </div>
       </section>

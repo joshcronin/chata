@@ -65,7 +65,11 @@
 
       form {
         margin: 0 auto;
-        text-align: right;
+        text-align: left;
+
+        .btn-link {
+          padding-left: 0px;
+        }
       }
 
     }

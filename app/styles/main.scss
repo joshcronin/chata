@@ -11,6 +11,11 @@ $icon-font-path: '../fonts/';
   padding: 0.2em 0;
 }
 
+html,
+body {
+  min-height: 100%;
+}
+
 /* Space out content a bit */
 body {
   padding-top: 20px;
@@ -91,3 +96,26 @@ body {
     border-bottom: 0;
   }
 }
+
+@mixin respond($media) {
+
+  @if $media == lg {
+    @media screen and (max-width: (1200px - 1)) { @content; }
+  }
+  @else if $media == md {
+    @media screen and (max-width: (992px - 1)) { @content; }
+  }
+  @else if $media == sm {
+    @media screen and (max-width: (768px - 1)) { @content; }
+  }
+  @else if $media == xs {
+    @media screen and (max-width: (480px - 1)) { @content; }
+  }
+  @else {
+    @media screen and (max-width: $media) { @content; }
+  }
+
+}
+
+
+@import 'partials/_login';

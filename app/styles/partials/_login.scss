@@ -9,6 +9,11 @@
   .page {
     text-align: center;
 
+    @include respond(xs) {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
     .holder {
       background: #FFFFFF;
       padding: 30px 20px;
@@ -42,7 +47,7 @@
       }
 
       @include respond(xs) {
-        margin: 40px 10px;
+        margin: 40px auto;
         padding: 20px 10px 15px;
       }
 

@@ -10,25 +10,26 @@ app.run(['Pubnub', function (Pubnub) {
     });
 }]);
 
-app.controller("LoginController", function($scope) {
+app.controller("LoginController", function($scope, $firebaseAuth) {
 
 	//Error content
 	$scope.error = {
 		message: "Username or password incorrect",//Message to be shown in form
 		show: false//If true, message will be visible in form
 	};
-   
+
 	$scope.usr_email = '';//The email field value
 	$scope.usr_password = '';//The password field value
 
 	//Method called on form submit
 	$scope.submit = function() {
-		console.group('Login submission');
-		console.log('Username: ' + $scope.usr_email);
-		console.log('Password: ' + $scope.usr_password);
-		console.groupEnd();
+    $firebaseAuth().$signInWithEmailAndPassword($scope.usr_email, $scope.usr_password).then(function(firebaseUser) {
+			// Temporary before we have authenticated routes
+      console.log("Signed in as:", firebaseUser.uid);
+    }).catch(function(error) {
+      $scope.throwError();
+    });
 		//If there is an error use this method
-		$scope.throwError();
 	};
 
 	//Method to throw error
@@ -36,7 +37,7 @@ app.controller("LoginController", function($scope) {
 		$scope.error.show = true;
 	};
 
-	//Method to throw error
+	//Method to cancel error
 	$scope.cancelError = function() {
 		$scope.error.show = false;
 	};

@@ -23,8 +23,7 @@ app.controller("LoginController", function($scope, $firebaseAuth) {
 
 	//Method called on form submit
 	$scope.submit = function() {
-    var auth = $firebaseAuth();
-    auth.$signInWithEmailAndPassword($scope.usr_email, $scope.usr_password).then(function(firebaseUser) {
+    $firebaseAuth().$signInWithEmailAndPassword($scope.usr_email, $scope.usr_password).then(function(firebaseUser) {
 			// Temporary before we have authenticated routes
       console.log("Signed in as:", firebaseUser.uid);
     }).catch(function(error) {

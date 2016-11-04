@@ -10,7 +10,18 @@ app.run(['Pubnub', function (Pubnub) {
     });
 }]);
 
-app.controller("LoginController", function($scope, $firebaseAuth) {
+app.controller("LoginController", function($scope, $firebaseAuth, $firebaseArray) {
+
+
+	var ref = firebase.database().ref();
+	var pubnub = $firebaseArray(ref.child('pubnub'));
+
+	pubnub.$loaded(function() {
+		console.log(pubnub);
+	}, function(error) {
+		console.log(error);
+		return false;
+	});
 
 	//Error content
 	$scope.error = {

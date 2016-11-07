@@ -1,0 +1,28 @@
+body {
+  padding-top: 0;
+}
+.chat {
+  background-color: #1abc9c;
+  .page {
+    body {
+      padding-top: 0;
+    }
+    img {
+      display: block;
+      width: 100px;
+      height: auto;
+      margin: 0 auto;
+      position: relative;
+      bottom: 6px;
+    }
+    .navbar-center {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 0;
+      text-align: center;
+      margin: auto;
+      height: 100%;
+    }
+  }
+}

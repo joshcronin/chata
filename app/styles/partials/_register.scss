@@ -1,91 +1,14 @@
 .register {
-  background-color: #383838;
-  background-image: url(../img/login-bg.jpg);
-  background-size: 100% auto;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  
-  	#hiddenFileUploader {
-	display:none;
-	}
-	
-	#uploadedPicture{
-	float: left;
-	margin-right: 20px;
-	margin-bottom: 10px;
-	height: 100px;
-	width: 100px;
-	}
-
-  .page {
-    text-align: center;
-
-    @include respond(xs) {
-      padding-left: 10px;
-      padding-right: 10px;
-    }
-
-    .holder {
-      background: #FFFFFF;
-      padding: 30px 20px;
-      width: 400px;
-      margin: 0 auto;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      margin-left: -200px;
-      -webkit-transform: translateY(-50%);
-      -moz-transform: translateY(-50%);
-      -o-transform: translateY(-50%);
-      -ms-transform: translateY(-50%);
-      transform: translateY(-50%);
-
-      @include respond(md) {
-        padding: 20px 10px;
-        max-width: 300px;
-        margin-left: -150px;
-      }
-
-      @include respond(sm) {
-        position: static;
-        width: auto;
-        margin: 15px auto;
-        -webkit-transform: translateY(0);
-        -moz-transform: translateY(0);
-        -o-transform: translateY(0);
-        -ms-transform: translateY(0);
-        transform: translateY(0);
-      }
-
-      @include respond(xs) {
-        margin: 40px auto;
-        padding: 20px 10px 15px;
-      }
-
-      h1 {
-        font-size: 20px;
-        margin: 10px 0px;
-      }
-
-      img {
-        display: block;
-        width: 100px;
-        height: auto;
-        margin: 0 auto;
-      }
-
-      form {
-        margin: 0 auto;
-        text-align: left;
-
-        .btn-link {
-          padding-left: 0px;
-        }
-      }
-
-    }
-
+  #hiddenFileUploader {
+    display: none;
   }
 
+  #uploadedPicture {
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    height: 100px;
+    width: 100px;
+    background-color: grey;
+  }
 }

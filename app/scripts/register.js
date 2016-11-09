@@ -36,20 +36,22 @@ app.controller("registerController", function($scope, $firebaseAuth) {
         var imagesRef = storage.child('images/profile');
         var picture = $('#uploadedPicture').attr('src').split(',')[1];
 
-        // Uploads the file
-        var uploadTask = imagesRef.child(firebaseUser.uid + '/profile').putString(picture, 'base64');
+        if (picture) {
+          // Uploads the file
+          var uploadTask = imagesRef.child(firebaseUser.uid + '/profile').putString(picture, 'base64');
 
-        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-          function(snapshot) {
-            console.log(snapshot);
-          },
-          function(error) {
-            console.log(error);
-          },
-          function() {
-            console.log(uploadTask.snapshot.downloadURL);
-          }
-        );
+          uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+            function(snapshot) {
+              console.log(snapshot);
+            },
+            function(error) {
+              console.log(error);
+            },
+            function() {
+              console.log(uploadTask.snapshot.downloadURL);
+            }
+          );
+        }
       })
       .then(function(firebaseUser) {
         // Sign the user in
@@ -107,10 +109,32 @@ var readURL = function(input) {
           .height(100);
       };
       reader.readAsDataURL(input.files[0]);
+    } else {
+      alert('Could not upload image');
     }
   }
 };
 
 var validUpload = function(file) {
-  return true;
+  var ext = getExtension(file.name);
+  if (isImage(ext)) {
+    return true;
+  }
+  return false;
+};
+
+var getExtension = function(file) {
+  var ext = file.split('.');
+  return ext[ext.length - 1];
+};
+
+var isImage = function(ext) {
+  switch (ext.toLowerCase()) {
+    case 'jpg':
+    case 'gif':
+    case 'bmp':
+    case 'png':
+      return true;
+  }
+  return false;
 };

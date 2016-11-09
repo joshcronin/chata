@@ -16,16 +16,50 @@ app.controller("registerController", function($scope, $firebaseAuth) {
     username: '', // The username field
   };
 
+  $scope.getFile = function() {
+    document.getElementById("upfile").click();
+  };
+
   //Method called on form submit
   $scope.submit = function() {
     $firebaseAuth().$createUserWithEmailAndPassword($scope.user.email, $scope.user.password)
       .then(function(firebaseUser) {
+        // Save the username
         var ref = firebase.database().ref();
         ref.child("users").child(firebaseUser.uid).set({
           name: $scope.user.username
         });
       })
+      .then(function() {
+        // Save the users profile picture
+
+        // Gets firebase references and picture
+        var storage = firebase.storage().ref();
+        var imagesRef = storage.child('images/profile');
+        var picture = $('#uploadedPicture').attr('src');
+
+        // pciture metadata
+        var metadata = {
+          contentType: 'image/jpeg'
+        };
+
+        // Uploads the file
+        var uploadTask = imagesRef.child('firebaseUser.uid/' + 'display').put(picture, metadata);
+
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+          function(snapshot) {
+            console.log(snapshot);
+          },
+          function(error) {
+            console.log(error);
+          },
+          function() {
+            console.log(uploadTask.snapshot.downloadURL);
+          }
+        );
+      })
       .then(function(firebaseUser) {
+        // Sign the user in
         $firebaseAuth().$signInWithEmailAndPassword($scope.user.email, $scope.user.password).then(function(firebaseUser) {
           // Temporary before we have authenticated routes
           console.log("Signed in as:", firebaseUser.uid);
@@ -68,3 +102,16 @@ var compareTo = function() {
 };
 
 app.directive("compareTo", compareTo);
+
+var readURL = function(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      $('#uploadedPicture')
+        .attr('src', e.target.result)
+        .width(100)
+        .height(100);
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+};

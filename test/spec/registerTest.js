@@ -1,9 +1,7 @@
 (function() {
   'use strict';
-  var requirejs = require('requirejs');
-  require(main);
 
-  describe('LoginController', function() {
+  describe('RegisterController', function() {
     beforeEach(module('chataApp'));
 
     var $controller;
@@ -14,7 +12,7 @@
 
     it('sets error to true', function() {
       var $scope = {};
-      var controller = $controller('LoginController', {
+      var controller = $controller('registerController', {
         $scope: $scope
       });
       $scope.throwError();
@@ -23,7 +21,7 @@
 
     it('sets error to false', function() {
       var $scope = {};
-      var controller = $controller('LoginController', {
+      var controller = $controller('registerController', {
         $scope: $scope
       });
       $scope.cancelError();

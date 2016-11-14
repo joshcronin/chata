@@ -1,9 +1,9 @@
 // Define a new module for chata app. The array holds the names of dependencies if any.
 // $firebaseObject, $firebaseArray, and $firebaseAuth can be injected into any controller, service, or factory.
 // Pubnub Object is now avaliable
-var app = angular.module("chataApp", ["firebase"]);
+var app = angular.module("chataApp", ["firebase", "ngFileUpload"]);
 
-app.controller("registerController", function($scope, $firebaseAuth) {
+app.controller("registerController", function($scope, $firebaseAuth, Upload) {
 
   $scope.error = {
     message: "", //Message to be shown in form
@@ -14,6 +14,7 @@ app.controller("registerController", function($scope, $firebaseAuth) {
     email: '', //The email field value
     password: '', //The password field value
     username: '', // The username field
+    picture: '', // User profile picture
   };
 
   $scope.getFile = function() {
@@ -75,8 +76,70 @@ app.controller("registerController", function($scope, $firebaseAuth) {
   $scope.cancelError = function() {
     $scope.error.show = false;
   };
+
+  // Upload a profile picture
+  $scope.uploadFiles = function(file) {
+    $scope.f = file;
+    if (file) {
+      // Check if image is valid
+      if ($scope.validUpload(file)) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+
+          // Set thumbnail
+          $('#uploadedPicture')
+            .attr('src', e.target.result)
+            .width(100)
+            .height(100);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        $scope.throwError('Could not upload image');
+      }
+    }
+  };
+
+  /**
+   * @param {File} File Object
+   * @return {boolean} if the upload is valid
+   */
+  $scope.validUpload = function(file) {
+    var ext = $scope.getExtension(file.name);
+    if ($scope.isImage(ext)) {
+      return true;
+    }
+    return false;
+  };
+
+  /**
+   * @param {File} File Object
+   * @return {String} the extension of the file
+   */
+  $scope.getExtension = function(file) {
+    var ext = file.split('.');
+    return ext[ext.length - 1];
+  };
+
+  /**
+   * @param {String} extension
+   * @return {boolean} if the file extension is an image type
+   */
+  $scope.isImage = function(ext) {
+    switch (ext.toLowerCase()) {
+      case 'jpg':
+      case 'gif':
+      case 'bmp':
+      case 'png':
+        return true;
+    }
+    return false;
+  };
 });
 
+/**
+ * Directive that will compare two input fields
+ *
+ */
 var compareTo = function() {
   return {
     require: "ngModel",
@@ -97,44 +160,3 @@ var compareTo = function() {
 };
 
 app.directive("compareTo", compareTo);
-
-var readURL = function(input) {
-  if (input.files && input.files[0]) {
-    if (validUpload(input.files[0])) {
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        $('#uploadedPicture')
-          .attr('src', e.target.result)
-          .width(100)
-          .height(100);
-      };
-      reader.readAsDataURL(input.files[0]);
-    } else {
-      alert('Could not upload image');
-    }
-  }
-};
-
-var validUpload = function(file) {
-  var ext = getExtension(file.name);
-  if (isImage(ext)) {
-    return true;
-  }
-  return false;
-};
-
-var getExtension = function(file) {
-  var ext = file.split('.');
-  return ext[ext.length - 1];
-};
-
-var isImage = function(ext) {
-  switch (ext.toLowerCase()) {
-    case 'jpg':
-    case 'gif':
-    case 'bmp':
-    case 'png':
-      return true;
-  }
-  return false;
-};

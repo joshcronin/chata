@@ -27,6 +27,10 @@ chataApp.config(['$locationProvider', '$routeProvider',
     when('/register', {
       templateUrl: 'templates/register.html',
       controller: 'register'
-    });
+    }).
+    when('/profile', {
+      templateUrl: 'templates/profile.html',
+      controller: 'profile'
+    })
   }
 ]);

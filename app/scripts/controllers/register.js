@@ -1,9 +1,7 @@
-// Define a new module for chata app. The array holds the names of dependencies if any.
-// $firebaseObject, $firebaseArray, and $firebaseAuth can be injected into any controller, service, or factory.
-// Pubnub Object is now avaliable
-var app = angular.module("chataApp", ["firebase", "ngFileUpload"]);
+var registerController = angular.module('registerController', []);
 
-app.controller("registerController", function($scope, $firebaseAuth, Upload) {
+registerController.controller("register", ['$firebaseAuth', '$scope', '$location', '$http',
+ function($firebaseAuth, $scope, $location, $http) {
 
   $scope.error = {
     message: "", //Message to be shown in form
@@ -134,7 +132,7 @@ app.controller("registerController", function($scope, $firebaseAuth, Upload) {
     }
     return false;
   };
-});
+}]);
 
 /**
  * Directive that will compare two input fields
@@ -159,4 +157,4 @@ var compareTo = function() {
   };
 };
 
-app.directive("compareTo", compareTo);
+chataApp.directive("compareTo", compareTo);

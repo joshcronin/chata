@@ -1,0 +1,31 @@
+<div class="form" ng-controller="login">
+  <article class="container">
+    <section class="page">
+      <div class="holder">
+        <img src="img/logo.png" alt="Chata logo">
+        <h1>Login</h1>
+        <form method="POST" ng-submit="submit()" name="login" novalidate>
+          <p class="text-danger" ng-if="error.show"><small>{{error.message}}</small></p>
+          <div class="form-group">
+            <label class="sr-only" for="email">Email address</label>
+            <input type="email" name="email" class="form-control" id="loginEmail" placeholder="Email" ng-model="usr_email" required>
+            <div ng-show="login.$submitted || login.email.$touched">
+              <span ng-show="login.email.$error.required">Please enter an email address.</span>
+              <span ng-show="login.email.$error.email">This is not a valid email.</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="sr-only" for="password">Password</label>
+            <input type="password" name="password" class="form-control" id="loginPassword" placeholder="Password" ng-model="usr_password" required>
+            <div ng-show="login.$submitted || login.password.$touched">
+              <span ng-show="login.password.$error.required">Please enter a password.</span>
+            </div>
+          </div>
+          <a href="/#/register" class="btn btn-link">Register</a>
+          <button type="submit" class="btn btn-success pull-right" ng-disabled="login.$invalid">Login</button>
+        </form>
+      </div>
+    </section>
+    <footer></footer>
+  </article>
+</div>

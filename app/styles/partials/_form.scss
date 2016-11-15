@@ -1,14 +1,15 @@
 .form {
   background-color: #383838;
-  background-image: url(../img/login-bg.jpg);
+  background-image: url("../img/login-bg.jpg");
   background-size: 100% auto;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
 
   .page {
     text-align: center;
-
     @include respond(xs) {
       padding-left: 10px;
       padding-right: 10px;
@@ -28,13 +29,11 @@
       -o-transform: translateY(-50%);
       -ms-transform: translateY(-50%);
       transform: translateY(-50%);
-
       @include respond(md) {
         padding: 20px 10px;
         max-width: 300px;
         margin-left: -150px;
       }
-
       @include respond(sm) {
         position: static;
         width: auto;
@@ -45,7 +44,6 @@
         -ms-transform: translateY(0);
         transform: translateY(0);
       }
-
       @include respond(xs) {
         margin: 40px auto;
         padding: 20px 10px 15px;
@@ -53,7 +51,7 @@
 
       h1 {
         font-size: 20px;
-        margin: 10px 0px;
+        margin: 10px 0;
       }
 
       img {
@@ -68,12 +66,9 @@
         text-align: left;
 
         .btn-link {
-          padding-left: 0px;
+          padding-left: 0;
         }
       }
-
     }
-
   }
-
 }

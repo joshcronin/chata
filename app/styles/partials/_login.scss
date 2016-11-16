@@ -1,10 +1,7 @@
 .login {
-  background-color: #383838;
-  background-image: url(../img/login-bg.jpg);
-  background-size: 100% auto;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
+  background: #3498DB; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #525252 , #3498DB); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #525252 , #3498DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   .page {
     text-align: center;

@@ -17,6 +17,7 @@ loginController.controller("login", ['$firebaseAuth', '$scope', '$location', '$h
     $firebaseAuth().$signInWithEmailAndPassword($scope.usr_email, $scope.usr_password).then(function(firebaseUser) {
 			// Temporary before we have authenticated routes
       console.log("Signed in as:", firebaseUser.uid);
+      $location.path('chatroom');
     }).catch(function(error) {
       $scope.throwError();
     });

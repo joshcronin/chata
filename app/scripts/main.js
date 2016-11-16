@@ -33,6 +33,8 @@ chataApp.config(['$locationProvider', '$routeProvider',
     })
     .when('/chatroom', {
       templateUrl: 'templates/chatroom.html',
-    })
+    }).otherwise({
+      redirectTo: '/'
+    });
   }
 ]);

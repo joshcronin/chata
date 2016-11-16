@@ -1,10 +1,5 @@
 .form {
-  background-color: #383838;
-  background-image: url("../img/login-bg.jpg");
-  background-size: 100% auto;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
+  background-color: #6FC2E5;
   width: 100%;
   height: 100%;
 
@@ -24,6 +19,7 @@
       top: 50%;
       left: 50%;
       margin-left: -200px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
       -webkit-transform: translateY(-50%);
       -moz-transform: translateY(-50%);
       -o-transform: translateY(-50%);

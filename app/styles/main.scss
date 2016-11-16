@@ -13,13 +13,7 @@ $icon-font-path: '../fonts/';
 
 html,
 body {
-  min-height: 100%;
-}
-
-/* Space out content a bit */
-body {
-  padding-top: 20px;
-  padding-bottom: 20px;
+  height: 100%;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -119,4 +113,6 @@ body {
 
 
 @import 'partials/_login';
+@import 'partials/_chatroom';
+@import 'partials/_navbar';
 @import 'partials/_profile';

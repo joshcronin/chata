@@ -11,7 +11,7 @@
             <label class="sr-only" for="registerUsername">Username</label>
             <input type="text" name="uName" class="form-control" id="registerUsername" placeholder="Username" ng-model="user.username" required>
             <div ng-show="register.$submitted || register.uName.$touched">
-              <div ng-show="form.uName.$error.required">Tell us your username.</div>
+              <div ng-show="register.uName.$error.required">Tell us your username.</div>
             </div>
           </div>
 

@@ -19,18 +19,20 @@ chataApp.run(['Pubnub', function(Pubnub) {
 
 chataApp.config(['$locationProvider', '$routeProvider',
   function config($locationProvider, $routeProvider) {
-    $routeProvider.
-    when('/', {
+    $routeProvider
+    .when('/', {
       templateUrl: 'templates/login.html',
       controller: 'login'
-    }).
-    when('/register', {
+    })
+    .when('/register', {
       templateUrl: 'templates/register.html',
       controller: 'register'
-    }).
-    when('/profile', {
+    })
+    .when('/profile', {
       templateUrl: 'templates/profile.html',
-      controller: 'profile'
+    })
+    .when('/chatroom', {
+      templateUrl: 'templates/chatroom.html',
     })
   }
 ]);

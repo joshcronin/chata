@@ -14,6 +14,7 @@ $icon-font-path: '../fonts/';
 html,
 body {
   height: 100%;
+  width: 100%;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -91,6 +92,12 @@ body {
   }
 }
 
+.fill {
+    min-height: 100%;
+    height: 100%;
+    width: 100%;
+}
+
 @mixin respond($media) {
 
   @if $media == lg {
@@ -111,8 +118,8 @@ body {
 
 }
 
-
-@import 'partials/_login';
+@import 'partials/_form';
+@import 'partials/_register';
 @import 'partials/_chatroom';
 @import 'partials/_navbar';
 @import 'partials/_profile';

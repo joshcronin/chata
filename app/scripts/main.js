@@ -6,7 +6,8 @@ var chataApp = angular.module("chataApp", ["ngRoute",
   "firebase",
   "pubnub.angular.service",
   "loginController",
-  "registerController"
+  "registerController",
+  "navController"
 ]);
 
 chataApp.run(['Pubnub', function(Pubnub) {

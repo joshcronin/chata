@@ -10,6 +10,7 @@ var chataApp = angular.module("chataApp", ["ngRoute",
   "navController",
   "chatController",
   "authFactory",
+  "profileController"
 ]);
 
 chataApp.run(['Pubnub', "$rootScope", "$location", function(Pubnub, $rootScope, $location) {
@@ -42,6 +43,16 @@ chataApp.config(['$locationProvider', '$routeProvider',
       })
       .when('/profile', {
         templateUrl: 'templates/profile.html',
+        controller: 'profile',
+        resolve: {
+          // controller will not be loaded until $requireAuth resolves
+          // Auth refers to our $firebaseAuth wrapper
+          "currentAuth": ["Auth", function(Auth) {
+            // $requireAuth returns a promise so the resolve waits for it to complete
+            // If the promise is rejected, it will throw a $stateChangeError
+            return Auth.$requireSignIn();
+          }]
+        }
       })
       .when('/chatroom', {
         templateUrl: 'templates/chatroom.html',

@@ -7,7 +7,8 @@ var chataApp = angular.module("chataApp", ["ngRoute",
   "pubnub.angular.service",
   "loginController",
   "registerController",
-  "navController"
+  "navController",
+  "chatController"
 ]);
 
 chataApp.run(['Pubnub', function(Pubnub) {
@@ -16,26 +17,49 @@ chataApp.run(['Pubnub', function(Pubnub) {
     subscribeKey: 'sub-c-8ebd3efa-9f52-11e6-aff8-0619f8945a4f'
   });
 }]);
+chataApp.run(["$rootScope", "$location", function($rootScope, $location) {
+  $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
+    // We can catch the error thrown when the $requireAuth promise is rejected
+    // and redirect the user back to the home page
+    if (error === "AUTH_REQUIRED") {
+      $location.path("/#/");
+    }
+  });
+}]);
 
 
 chataApp.config(['$locationProvider', '$routeProvider',
   function config($locationProvider, $routeProvider) {
     $routeProvider
-    .when('/', {
-      templateUrl: 'templates/login.html',
-      controller: 'login'
-    })
-    .when('/register', {
-      templateUrl: 'templates/register.html',
-      controller: 'register'
-    })
-    .when('/profile', {
-      templateUrl: 'templates/profile.html',
-    })
-    .when('/chatroom', {
-      templateUrl: 'templates/chatroom.html',
-    }).otherwise({
-      redirectTo: '/'
-    });
+      .when('/', {
+        templateUrl: 'templates/login.html',
+        controller: 'login'
+      })
+      .when('/register', {
+        templateUrl: 'templates/register.html',
+        controller: 'register'
+      })
+      .when('/profile', {
+        templateUrl: 'templates/profile.html',
+      })
+      .when('/chatroom', {
+        templateUrl: 'templates/chatroom.html',
+        controller: 'chat',
+        resolve: {
+          // controller will not be loaded until $requireAuth resolves
+          // Auth refers to our $firebaseAuth wrapper in the example above
+          "currentAuth": ["Auth", function(Auth) {
+            // $requireAuth returns a promise so the resolve waits for it to complete
+            // If the promise is rejected, it will throw a $stateChangeError (see above)
+            return Auth.$requireSignIn();
+          }]
+        }
+      }).otherwise({
+        redirectTo: '/'
+      });
   }
 ]);
+
+chataApp.factory("Auth", ["$firebaseAuth", function($firebaseAuth) {
+  return $firebaseAuth();
+}]);

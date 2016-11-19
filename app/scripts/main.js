@@ -8,24 +8,25 @@ var chataApp = angular.module("chataApp", ["ngRoute",
   "loginController",
   "registerController",
   "navController",
-  "chatController"
+  "chatController",
+  "authFactory",
 ]);
 
-chataApp.run(['Pubnub', function(Pubnub) {
+chataApp.run(['Pubnub', "$rootScope", "$location", function(Pubnub, $rootScope, $location) {
   Pubnub.init({
     publishKey: 'pub-c-81e89e4d-53aa-4a63-a79d-f5515cedec4e',
     subscribeKey: 'sub-c-8ebd3efa-9f52-11e6-aff8-0619f8945a4f'
   });
-}]);
-chataApp.run(["$rootScope", "$location", function($rootScope, $location) {
+
   $rootScope.$on("$routeChangeError", function(event, next, previous, error) {
-    // We can catch the error thrown when the $requireAuth promise is rejected
-    // and redirect the user back to the home page
+    // We can catch the error thrown when the $requireSignIn promise is rejected
+    // and redirect the user back to the login page
     if (error === "AUTH_REQUIRED") {
       $location.path("/#/");
     }
   });
 }]);
+
 
 
 chataApp.config(['$locationProvider', '$routeProvider',
@@ -47,10 +48,10 @@ chataApp.config(['$locationProvider', '$routeProvider',
         controller: 'chat',
         resolve: {
           // controller will not be loaded until $requireAuth resolves
-          // Auth refers to our $firebaseAuth wrapper in the example above
+          // Auth refers to our $firebaseAuth wrapper
           "currentAuth": ["Auth", function(Auth) {
             // $requireAuth returns a promise so the resolve waits for it to complete
-            // If the promise is rejected, it will throw a $stateChangeError (see above)
+            // If the promise is rejected, it will throw a $stateChangeError
             return Auth.$requireSignIn();
           }]
         }
@@ -59,7 +60,3 @@ chataApp.config(['$locationProvider', '$routeProvider',
       });
   }
 ]);
-
-chataApp.factory("Auth", ["$firebaseAuth", function($firebaseAuth) {
-  return $firebaseAuth();
-}]);

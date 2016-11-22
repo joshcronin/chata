@@ -33,6 +33,7 @@
         margin-left: -150px;
       }
       @include respond(sm) {
+        max-width: none;
         position: static;
         width: auto;
         margin: 15px auto;

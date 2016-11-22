@@ -23,13 +23,22 @@
     <section class="container-fluid full-height">
       <div class="row">
         <div class="main-chat col-xs-12">
-          <div class="main-panel"></div>
+          <div class="main-panel">
+            <ul class="collection">
+              <li ng-repeat="message in messageList">{{message.content}}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row" ng-if="error.show">
+        <div class="col-xs-12">
+          <p class="text-danger"><small>{{error.message}}</small></p>
         </div>
       </div>
       <div class="row">
         <div class="message-box col-xs-12">
-          <textarea class="message-panel full-height" placeholder="Send message"></textarea>
-          <button type="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-send" aria-hidden="true"></span><span class="sr-only">Send</span></button>
+          <textarea class="message-panel full-height" placeholder="Send message" ng-model='message'></textarea>
+          <button type="button" class="btn btn-primary btn-lg" ng-click='publish()' ng-disabled='!message'><span class="glyphicon glyphicon-send" aria-hidden="true"></span><span class="sr-only">Send</span></button>
         </div>
       </div>
     </section>

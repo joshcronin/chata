@@ -3,9 +3,10 @@ var profileController = angular.module('profileController', []);
 profileController.controller("profile", ['User', '$firebaseAuth', '$firebaseObject', '$scope', '$location', '$http',
   function(User, $firebaseAuth, $firebaseObject, $scope, $location, $http) {
     $scope.user = User.getUser();
+    $scope.user.newPassword = null;
 
     $scope.changePassword = function() {
-      $firebaseAuth().$updatePassword($scope.newPassword).then(function() {
+      User.updatePassword($scope.newPassword).then(function() {
         console.log("Password changed successfully!");
       }).catch(function(error) {
         console.error("Error: ", error);
@@ -13,7 +14,7 @@ profileController.controller("profile", ['User', '$firebaseAuth', '$firebaseObje
     };
 
     $scope.changeEmail = function() {
-      $firebaseAuth().$updateEmail($scope.email).then(function() {
+      User.updateEmail($scope.email).then(function() {
         console.log("Email changed successfully!");
       }).catch(function(error) {
         console.error("Error: ", error);
@@ -21,13 +22,11 @@ profileController.controller("profile", ['User', '$firebaseAuth', '$firebaseObje
     };
 
     $scope.changeUsername = function() {
-      nameRef.set({
-        name: $scope.user.username
-      });
+      User.updateUsername($scope.user.username);
     };
 
     $scope.changeProfilePicture = function() {
-      a
+      User.updateProfilePicture(picture);
     };
   }
 ]);

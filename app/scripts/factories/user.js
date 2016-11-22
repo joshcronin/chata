@@ -3,33 +3,62 @@ var userFactory = angular.module('userFactory', []);
 authFactory.factory("User", ["$firebaseAuth", "$firebaseObject", function($firebaseAuth, $firebaseObject) {
   return {
     getUser: function() {
-      var user = {};
+      var user = {
+        email: this.getEmail(),
+        profileUrl: '',
+        username: ''
+      };
 
+      this.getUsername().then((userObj) => {
+        user.username = userObj.name;
+        return this.getProfileUrl();
+      }).then(function(url) {
+        user.profileUrl = url || 'img/avatar.png';
+      });
+
+      return user;
+    },
+
+    getEmail: function() {
+      return $firebaseAuth().$getAuth().email;
+    },
+
+    getUsername: function() {
+      var username = null;
       var userRef = firebase.database().ref("/users/" + $firebaseAuth().$getAuth().uid);
       var userObj = $firebaseObject(userRef);
 
+      return userObj.$loaded();
+
+    },
+
+    getProfileUrl: function() {
+      var url = null;
       var storage = firebase.storage();
       var pathReference = storage.ref(`images/profile/${$firebaseAuth().$getAuth().uid}/profile`);
 
-      userObj.$loaded().then(function(userObj) {
-          user.username = userObj.name;
-          return pathReference.getDownloadURL();
-        })
-        .then(function(url) {
-          user.profileUrl = url || 'img/avatar.png';
-          user.email = $firebaseAuth().$getAuth().email;
-        });
-        return user;
+      return pathReference.getDownloadURL();
     },
-    getEmail: function() {
 
+    updatePassword: function(password) {
+      return $firebaseAuth().$updatePassword(password);
     },
-    getUsername: function() {
 
+    updateEmail: function(email) {
+      return $firebaseAuth().$updateEmail(email);
     },
-    getProfileUrl: function() {
 
-    }
+    updateUsername: function(username) {
+      var userRef = firebase.database().ref("/users/" + $firebaseAuth().$getAuth().uid);
+
+      nameRef.set({
+        name: username
+      });
+    },
+
+    updateProfilePicture: function(picture) {
+      
+    },
   }
 
 }]);

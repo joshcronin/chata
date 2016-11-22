@@ -16,12 +16,10 @@
   }
 
   .main-chat {
-    height: 400px;
-    height: calc(100vh - 50px - 15px - 45px - 15px);
+    height: 350px;
 
     @include respond(sm) {
-      height: 300px;
-      height: calc(100vh - 50px - 15px - 45px - 25px);
+      height: 250px;
     }
   }
 
@@ -43,6 +41,12 @@
     background-color: white;
     resize: none;
     box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    border-radius: 0px;
   }
 
   .btn {

@@ -1,11 +1,13 @@
 @media (min-width: 768px){
-	#newPassword{
-		width:50%;
-		float: left;
-	}
-	#confirmPassword{
-		width:50%;
-		float: right;
-	}
+
 }
 
+@media (max-width:767px){
+	.confirmBtn{
+		margin-top: -5px
+	}
+	.saveChangesBtn{
+		margin-top: -5px;
+	}
+}
+	

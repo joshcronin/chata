@@ -2,7 +2,7 @@ var profileController = angular.module('profileController', []);
 
 profileController.controller("profile", ['$firebaseAuth', '$firebaseObject', '$scope', '$location', '$http',
   function($firebaseAuth, $firebaseObject, $scope, $location, $http) {
-    var nameRef = firebase.database().ref("/users/" + $firebaseAuth().$getAuth().uid + '/name/');
+    var nameRef = firebase.database().ref("/users/" + $firebaseAuth().$getAuth().uid);
     var user = $firebaseObject(nameRef);
 
     var storage = firebase.storage();
@@ -16,7 +16,7 @@ profileController.controller("profile", ['$firebaseAuth', '$firebaseObject', '$s
     };
 
     user.$loaded().then(function(user) {
-      $scope.user.username = user.$value;
+      $scope.user.username = user.name;
     });
 
     pathReference.getDownloadURL().then(function(url) {
@@ -34,7 +34,7 @@ profileController.controller("profile", ['$firebaseAuth', '$firebaseObject', '$s
     };
 
     $scope.changeEmail = function() {
-      $firebaseAuth().$updatePassword().$updateEmail($scope.email).then(function() {
+      $firebaseAuth().$updateEmail($scope.email).then(function() {
         console.log("Email changed successfully!");
       }).catch(function(error) {
         console.error("Error: ", error);
@@ -42,7 +42,13 @@ profileController.controller("profile", ['$firebaseAuth', '$firebaseObject', '$s
     };
 
     $scope.changeUsername = function() {
-      debugger;
+      nameRef.set({
+        name: $scope.user.username
+      });
+    };
+
+    $scope.changeProfilePicture = function() {
+      
     };
   }
 ]);

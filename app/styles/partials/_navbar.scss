@@ -1,6 +1,7 @@
 .navbar-default {
   border-radius: 0;
   box-shadow: 0 0px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
+  margin-bottom: 15px;
 }
 
 .dropdown {
@@ -9,11 +10,6 @@
   width: 60px;
   border: 1px solid grey;
   margin-right: 20px;
-}
-
-.logout {
-  font-size: 20px;
-  margin-top: 5px;
 }
 
 .navbar-right {
@@ -26,14 +22,16 @@
   display: center;
 }
 
-img {
-  display: inline-block;
-  width: 100px;
-  height: auto;
-  margin: 0 auto;
-  position: relative;
-  bottom: 6px;
-  margin-top: 3px;
+.navbar-brand {
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  img {
+    margin: 0px;
+    padding: 0px;
+    height: 30px;
+  }
+
 }
 
 .navbar-center {
@@ -57,4 +55,63 @@ img {
 
 .nav li a {
   padding: 10px 0;
+}
+
+.navbar {
+
+  .navbar-right {
+    padding-right: 3px;
+  }
+
+  @include respond(sm) {
+    .navbar-header,
+    .navbar-right {
+      display: inline-block;
+    }
+    .navbar-right {
+      margin: 0px;
+      float: right;
+      height: 50px;
+      padding-right: 0px;
+      margin-right: -11px;
+    }
+  }
+
+  li {
+    display: inline-block;
+
+    &.profile {
+      a {
+        background-image: url(/img/icon-profile.png);
+        background-size: 36px 36px;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width: 48px;
+        height: 50px;
+      }
+    }
+
+    &.chat {
+      a {
+        background-image: url(/img/icon-chatroom.png);
+        background-size: 36px 36px;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width: 48px;
+        height: 50px;
+      }
+    }
+
+    &.logout {
+      a {
+        background-image: url(/img/icon-logout.png);
+        background-size: 36px 36px;
+        background-position: center center;
+        background-repeat: no-repeat;
+        width: 48px;
+        height: 50px;      
+      }
+    }
+  }
+
 }

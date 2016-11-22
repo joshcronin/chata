@@ -1,17 +1,19 @@
 var profileController = angular.module('profileController', []);
 
-profileController.controller("profile", ['$firebaseAuth', '$scope', '$location', '$http',
-  function($firebaseAuth, $scope, $location, $http) {
+profileController.controller("profile", ['$firebaseAuth', '$firebaseObject', '$scope', '$location', '$http',
+  function($firebaseAuth, $firebaseObject, $scope, $location, $http) {
+    var nameRef = firebase.database().ref("/users/" + $firebaseAuth().$getAuth().uid + '/name/');
+
     $scope.user = {
       email: $firebaseAuth().$getAuth().email,
-      username: $scope.getUsername,
+      username: '',
     };
 
-    $scope.getUsername = function (){
-      var ref = firebase.database().ref();
-      ref.child("/users/" + $firebaseAuth().$getAuth().uid + '/name/').once('value').then(function(snap){
-        $scope.username = snap.val());
-      });
-    }
+    var user = $firebaseObject(nameRef);
+
+    // to take an action after the data loads, use the $loaded() promise
+    user.$loaded().then(function(user) {
+       $scope.user.username = user.$value;
+    });
   }
 ]);

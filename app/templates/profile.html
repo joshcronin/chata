@@ -31,7 +31,7 @@
         <form method="POST" ng-submit="">
           <p>Profile Picture (Optional)</p>
           <div class="form-group">
-            <img id="uploadedPicture" src="img/avatar.png" />
+            <img id="uploadedPicture" src={{user.profileUrl}} />
             <div id="hiddenFileUploader">
               <input id="upfile" type="file" value="upload" onchange="readURL(this)" />
             </div>
@@ -80,7 +80,7 @@
           <br>
           <div class="form-group">
             <!--<button type="submit" class="btn btn-success pull-right">Save Changes</button> -->
-            <div id="uploadBtn" class="btn btn-success pull-right" ng-click="">Save Changes</div>
+            <div id="uploadBtn" class="btn btn-success pull-right" ng-click="changeUsername()">Save Changes</div>
           </div>
 
         </form>

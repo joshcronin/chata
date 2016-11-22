@@ -31,10 +31,10 @@
           <div class="main-panel"></div>
         </div>
         <div class="message-box col-md-10 col-sm-10 col-xs-8">
-          <textarea class="message-panel full-height"></textarea>
+          <textarea class="message-panel full-height" ng-model='message'></textarea>
         </div>
         <div class="send-message col-md-2 col-xs-1">
-          <button type="button" class="btn btn-primary btn-lg">Send</button>
+          <button type="button" class="btn btn-primary btn-lg" ng-click='publish()'>Send</button>
         </div>
       </div>
     </section>

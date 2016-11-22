@@ -1,7 +1,7 @@
 <div class="chatroom">
   <article class="page">
     <section>
-      <nav class="navbar navbar-default">
+      <nav class="navbar navbar-default" ng-controller="navbar">
         <div class="container-fluid">
           <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -15,8 +15,10 @@
           </div>
           <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
-              <li class="dropdown"><a class="fill" href="/#/profile"></a></li>
-              <li class="logout"><a href="#">Logout</a></li>
+              <li class="dropdown">
+                <a class="fill" href="/#/profile"></a>
+              </li>
+              <li class="logout"><a href="/#/" ng-click="authObj.$signOut()">Logout</a></li>
             </ul>
           </div>
         </div>

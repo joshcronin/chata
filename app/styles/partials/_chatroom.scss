@@ -23,9 +23,12 @@
   }
 
   .main-panel {
+    overflow: scroll;
     border: 1px solid black;
     height: 100%;
     background-color: white;
+    word-wrap: break-word;
+    word-break: break-all;
   }
 
   .message-box {
@@ -43,5 +46,9 @@
   .btn {
     margin-top: 14px;
     padding: 24px;
+  }
+
+  .collection {
+    list-style-type: none;
   }
 }

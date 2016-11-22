@@ -23,9 +23,7 @@
   .main-panel {
     height: 100%;
     background-color: white;
-
-	border-radius: 6px;
-
+	border-radius: 6px 6px 0px 0px;
     border-bottom: 1px solid #000000;
     overflow: auto;
     background-color: white;
@@ -44,7 +42,7 @@
     border: none;
     background-color: white;
     resize: none;
-	border-radius: 6px 6px 0px 0px;
+	border-radius: 6px;
 	font-size: 1.2em;
     box-sizing: border-box;
     -webkit-appearance: none;

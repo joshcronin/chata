@@ -1,29 +1,8 @@
 var profileController = angular.module('profileController', []);
 
-profileController.controller("profile", ['$firebaseAuth', '$firebaseObject', '$scope', '$location', '$http',
-  function($firebaseAuth, $firebaseObject, $scope, $location, $http) {
-    var nameRef = firebase.database().ref("/users/" + $firebaseAuth().$getAuth().uid);
-    var user = $firebaseObject(nameRef);
-
-    var storage = firebase.storage();
-    var pathReference = storage.ref(`images/profile/${$firebaseAuth().$getAuth().uid}/profile`);
-
-    $scope.user = {
-      email: $firebaseAuth().$getAuth().email,
-      username: '',
-      profileUrl: 'img/avatar.png',
-      newPassword: null,
-    };
-
-    user.$loaded().then(function(user) {
-      $scope.user.username = user.name;
-    });
-
-    pathReference.getDownloadURL().then(function(url) {
-      $scope.user.profileUrl = url;
-    }).catch(function(error) {
-      console.log(error);
-    });
+profileController.controller("profile", ['User', '$firebaseAuth', '$firebaseObject', '$scope', '$location', '$http',
+  function(User, $firebaseAuth, $firebaseObject, $scope, $location, $http) {
+    $scope.user = User.getUser();
 
     $scope.changePassword = function() {
       $firebaseAuth().$updatePassword($scope.newPassword).then(function() {
@@ -48,7 +27,7 @@ profileController.controller("profile", ['$firebaseAuth', '$firebaseObject', '$s
     };
 
     $scope.changeProfilePicture = function() {
-      
+      a
     };
   }
 ]);

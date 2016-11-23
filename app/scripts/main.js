@@ -59,8 +59,9 @@ chataApp.run(['Pubnub', "$rootScope", "$location", function(Pubnub, $rootScope, 
 
 
 
-chataApp.config(['$locationProvider', '$routeProvider',
-  function config($locationProvider, $routeProvider) {
+chataApp.config(['$locationProvider', '$routeProvider', '$sceProvider',
+  function config($locationProvider, $routeProvider, $sceProvider) {
+    $sceProvider.enabled(false);
     $routeProvider
       .when('/', {
         templateUrl: 'templates/login.html',

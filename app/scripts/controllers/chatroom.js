@@ -1,7 +1,7 @@
 var chatController = angular.module('chatController', []);
 
-chatController.controller("chat", ['$rootScope', 'Pubnub', '$pubnubChannel', '$firebaseAuth', '$scope', '$location', '$http',
-  function($rootScope, Pubnub, $pubnubChannel, $firebaseAuth, $scope, $location, $http) {
+chatController.controller("chat", ['User','$rootScope', 'Pubnub', '$pubnubChannel', '$firebaseAuth', '$scope', '$location', '$http',
+  function(User, $rootScope, Pubnub, $pubnubChannel, $firebaseAuth, $scope, $location, $http) {
 
     //Get viewport height
     $scope.viewportHeight = window.innerHeight;
@@ -19,10 +19,19 @@ chatController.controller("chat", ['$rootScope', 'Pubnub', '$pubnubChannel', '$f
     });
 
     $scope.messageList = $pubnubChannel('chata', {
-      autoload: 0
+      autoload: 10,
+    });
+
+    User.getUsername().then(function(user) {
+      $scope.username = user.name;
     });
 
     $scope.message = ''; // Users message
+    $scope.username = ''; // Users username
+
+    User.getProfileUrl().then(function(url) {
+      $scope.profileUrl = url;
+    });
 
     $scope.error = {
       message: "", //Message to be shown in form
@@ -33,7 +42,7 @@ chatController.controller("chat", ['$rootScope', 'Pubnub', '$pubnubChannel', '$f
     $scope.enterToSend = function(keyEvent) {
       //If enter key, but not shift key
       if (keyEvent.keyCode == 13 && !keyEvent.shiftKey) {
-        //Prevent default behaviour 
+        //Prevent default behaviour
         keyEvent.preventDefault();
         //Publish message
         $scope.publish();
@@ -44,7 +53,9 @@ chatController.controller("chat", ['$rootScope', 'Pubnub', '$pubnubChannel', '$f
       $scope.cancelError();
       Pubnub.publish({
           message: {
-            content: $scope.message
+            content: $scope.message,
+            username: $scope.username,
+            profilePic: $scope.profileUrl,
           },
           channel: 'chata'
         },

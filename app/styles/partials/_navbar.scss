@@ -63,7 +63,7 @@
     padding-right: 3px;
   }
 
-  @include respond(sm) {
+  @include respond(md) {
     .navbar-header,
     .navbar-right {
       display: inline-block;

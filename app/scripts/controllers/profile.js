@@ -22,6 +22,8 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
     $scope.changePassword = function() {
       User.updatePassword($scope.changePassword.newPass).then(function() {
         console.log("Password changed successfully!");
+		document.getElementById('hidden1').style.display = "none";
+		document.getElementById('passwordToggle').textContent = "Change";
       }).catch(function(error) {
         console.error("Error: ", error);
       });

@@ -33,23 +33,53 @@ registerController.controller("register", ['$firebaseAuth', '$scope', '$location
         // Gets firebase references and picture
         var storage = firebase.storage().ref();
         var imagesRef = storage.child('images/profile');
-        var picture = $('#uploadedPicture').attr('src').split(',')[1];
+        var picture = $('#uploadedPicture').attr('src');//.split(',')[1];
 
         if (picture) {
-          // Uploads the file
-          var uploadTask = imagesRef.child(firebaseUser.uid + '/profile').putString(picture, 'base64');
 
-          uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-            function(snapshot) {
-              console.log(snapshot);
-            },
-            function(error) {
-              console.log(error);
-            },
-            function() {
-              console.log(uploadTask.snapshot.downloadURL);
-            }
-          );
+          //Generate large image
+          $scope.resizeImage(picture, 350, 350).then(function(encodedImg) {
+            // Uploads the file
+            var uploadTask = imagesRef.child(firebaseUser.uid + '/profile').putString(encodedImg.split(',')[1], 'base64');
+
+            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+              function(snapshot) {
+                console.log(snapshot);
+              },
+              function(error) {
+                //Fail silently
+                //console.log(error);
+              },
+              function() {
+                console.log(uploadTask.snapshot.downloadURL);
+              }
+            );
+          }).catch(function(error) {
+            //Fail silently
+            //console.log(error);
+          });
+
+          //Generate small image
+          $scope.resizeImage(picture, 96, 96).then(function(encodedImg) {
+            // Uploads the file
+            var uploadTask = imagesRef.child(firebaseUser.uid + '/profile_thumb').putString(encodedImg.split(',')[1], 'base64');
+
+            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+              function(snapshot) {
+                console.log(snapshot);
+              },
+              function(error) {
+                //Fail silently
+                //console.log(error);
+              },
+              function() {
+                console.log(uploadTask.snapshot.downloadURL);
+              }
+            );
+          }).catch(function(error) {
+            //Fail silently
+            //console.log(error);
+          });
         }
       })
       .then(function(firebaseUser) {
@@ -96,6 +126,29 @@ registerController.controller("register", ['$firebaseAuth', '$scope', '$location
         $scope.throwError('Could not upload image');
       }
     }
+  };
+
+  $scope.resizeImage = function(img, width, height) {
+    //Return a promise
+    return new window.Promise(function(resolve, reject) {
+      // create an off-screen canvas
+      var canvas = document.createElement('canvas'),
+      ctx = canvas.getContext('2d');
+
+      // set its dimension to target size
+      canvas.width = width;
+      canvas.height = height;
+
+      var image = new Image();
+      image.onload = function() {
+        ctx.drawImage(image, 0, 0, width, height);
+        resolve(canvas.toDataURL());
+      };
+      image.onerror = function() {
+        reject(Error("There was a problem"));
+      }
+      image.src = img;
+    });
   };
 
   /**

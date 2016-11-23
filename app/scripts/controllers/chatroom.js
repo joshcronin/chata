@@ -1,6 +1,6 @@
 var chatController = angular.module('chatController', []);
 
-chatController.controller("chat", ['User' '$firebaseObject','Pubnub', '$pubnubChannel', '$firebaseAuth', '$scope', '$location', '$http',
+chatController.controller("chat", ['User', '$firebaseObject','Pubnub', '$pubnubChannel', '$firebaseAuth', '$scope', '$location', '$http',
   function(User, $firebaseObject, Pubnub, $pubnubChannel, $firebaseAuth, $scope, $location, $http) {
 
     $scope.messageList = $pubnubChannel('chata', {

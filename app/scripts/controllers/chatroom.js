@@ -71,6 +71,6 @@ chatController.controller("chat", ['$rootScope', 'Pubnub', '$pubnubChannel', '$f
     };
 
     //Get profile image URL
-    $rootScope.getProfileImage($firebaseAuth);
+    $rootScope.getProfileImage($firebaseAuth, 'profile_thumb');
   }
 ]);

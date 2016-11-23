@@ -3,7 +3,16 @@ var profileController = angular.module('profileController', []);
 profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth', '$firebaseObject', '$scope', '$location', '$http',
   function(UploadImage, User, $firebaseAuth, $firebaseObject, $scope, $location, $http) {
     $scope.user = User.getUser();
-    $scope.user.newPassword = null;
+    $scope.hasChangedProfile = false;
+
+    $scope.updateUser = function() {
+      $scope.changeEmail();
+      $scope.changeUsername();
+      if ($scope.hasChangedProfile) {
+        $scope.changeProfilePicture();
+        $scope.hasChangedProfile = false;
+      }
+    }
 
     $scope.changePassword = function() {
       User.updatePassword($scope.newPassword).then(function() {
@@ -43,6 +52,7 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
               .attr('src', e.target.result)
               .width(100)
               .height(100);
+            $scope.hasChangedProfile = true;
           };
           reader.readAsDataURL(file);
         } else {

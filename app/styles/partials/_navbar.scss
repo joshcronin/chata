@@ -75,6 +75,13 @@
       padding-right: 0px;
       margin-right: -11px;
     }
+	
+	#navPic {
+    /* margin-top: -40px; */
+    width: 44px;
+    margin: -5px 2px;
+    display: block;
+	}
   }
 
   li {
@@ -82,7 +89,7 @@
 
     &.profile {
       a {
-        background-image: url(/img/icon-profile.png);
+        /*background-image: url(/img/icon-profile.png);*/
         background-size: 36px 36px;
         background-position: center center;
         background-repeat: no-repeat;

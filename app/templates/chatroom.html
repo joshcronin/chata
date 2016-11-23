@@ -37,7 +37,7 @@
       </div>
       <div class="row">
         <div class="message-box col-xs-12">
-          <textarea class="message-panel full-height" placeholder="Send message" ng-model='message'></textarea>
+          <textarea class="message-panel full-height" placeholder="Send message" ng-model='message' ng-keypress="enterToSend($event)"></textarea>
           <button type="button" class="btn btn-primary btn-lg" ng-click='publish()' ng-disabled='!message'><span class="glyphicon glyphicon-send" aria-hidden="true"></span><span class="sr-only">Send</span></button>
         </div>
       </div>

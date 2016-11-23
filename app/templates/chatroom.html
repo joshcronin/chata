@@ -26,6 +26,7 @@
           <div class="main-panel">
             <ul class="row" id='username'>
               <div class='collection' ng-repeat="message in messageList">
+                <img class='message-image' src={{message.profilePic}}>
                 <li style='border-color: {{message.color}}'>{{message.username}}: {{message.content}}</li>
               </div>
             </ul>

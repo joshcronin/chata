@@ -42,8 +42,8 @@
     border: none;
     background-color: white;
     resize: none;
-	border-radius: 6px;
-	font-size: 1.2em;
+	  border-radius: 6px;
+	  font-size: 1.2em;
     box-sizing: border-box;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -72,5 +72,12 @@
     border: 2px solid grey;
     border-radius: 5px;
     padding: 5px 20px;
+    width: 90%;
+    margin-top: 2px;
+  }
+
+  .message-image {
+    height: 30px;
+    width: 40px;
   }
 }

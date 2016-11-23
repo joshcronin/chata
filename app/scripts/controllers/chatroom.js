@@ -22,15 +22,16 @@ chatController.controller("chat", ['User', '$firebaseObject','Pubnub', '$pubnubC
       autoload: 0
     });
 
-    var nameRef = firebase.database().ref("/users/" + $firebaseAuth().$getAuth().uid + '/name/');
-    var user = $firebaseObject(nameRef);
-
-    user.$loaded().then(function(user) {
-      $scope.username = user.$value;
+    User.getUsername().then(function(user) {
+      $scope.username = user.name;
     });
 
     $scope.message = ''; // Users message
     $scope.username = ''; // Users username
+
+    User.getProfileUrl().then(function(url) {
+      $scope.profileUrl = url;
+    });
 
     $scope.error = {
       message: "", //Message to be shown in form
@@ -41,7 +42,7 @@ chatController.controller("chat", ['User', '$firebaseObject','Pubnub', '$pubnubC
     $scope.enterToSend = function(keyEvent) {
       //If enter key, but not shift key
       if (keyEvent.keyCode == 13 && !keyEvent.shiftKey) {
-        //Prevent default behaviour 
+        //Prevent default behaviour
         keyEvent.preventDefault();
         //Publish message
         $scope.publish();
@@ -54,7 +55,7 @@ chatController.controller("chat", ['User', '$firebaseObject','Pubnub', '$pubnubC
           message: {
             content: $scope.message,
             username: $scope.username,
-            profilePic: User.getProfileUrl(),
+            profilePic: $scope.profileUrl,
           },
           channel: 'chata'
         },

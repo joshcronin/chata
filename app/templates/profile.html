@@ -25,7 +25,7 @@
          <form method="POST" ng-submit="">
             <p>Profile Picture (Optional)</p>
             <div class="form-group">
-               <img id="uploadedPicture" src="img/avatar.png" />
+               <img id="uploadedPicture" src="{{user.profileUrl}}" />
                <div id="hiddenFileUploader">
                   <input id="upfile" type="file" value="upload" onchange="readURL(this)" />
                </div>

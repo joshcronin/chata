@@ -1,7 +1,7 @@
 var registerController = angular.module('registerController', []);
 
-registerController.controller("register", ['User', '$firebaseAuth', '$scope', '$location', '$http',
- function(User, $firebaseAuth, $scope, $location, $http) {
+registerController.controller("register", ['UploadImage', 'User', '$firebaseAuth', '$scope', '$location', '$http',
+ function(UploadImage, User, $firebaseAuth, $scope, $location, $http) {
 
   $scope.error = {
     message: "", //Message to be shown in form
@@ -64,7 +64,7 @@ registerController.controller("register", ['User', '$firebaseAuth', '$scope', '$
     $scope.f = file;
     if (file) {
       // Check if image is valid
-      if ($scope.validUpload(file)) {
+      if (UploadImage.validUpload(file)) {
         var reader = new FileReader();
         reader.onload = function(e) {
 
@@ -79,41 +79,5 @@ registerController.controller("register", ['User', '$firebaseAuth', '$scope', '$
         $scope.throwError('Could not upload image');
       }
     }
-  };
-
-  /**
-   * @param {File} File Object
-   * @return {boolean} if the upload is valid
-   */
-  $scope.validUpload = function(file) {
-    var ext = $scope.getExtension(file.name);
-    if ($scope.isImage(ext)) {
-      return true;
-    }
-    return false;
-  };
-
-  /**
-   * @param {File} File Object
-   * @return {String} the extension of the file
-   */
-  $scope.getExtension = function(file) {
-    var ext = file.split('.');
-    return ext[ext.length - 1];
-  };
-
-  /**
-   * @param {String} extension
-   * @return {boolean} if the file extension is an image type
-   */
-  $scope.isImage = function(ext) {
-    switch (ext.toLowerCase()) {
-      case 'jpg':
-      case 'gif':
-      case 'bmp':
-      case 'png':
-        return true;
-    }
-    return false;
   };
 }]);

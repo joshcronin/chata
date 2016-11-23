@@ -11,7 +11,8 @@ var chataApp = angular.module("chataApp", ["ngRoute",
   "chatController",
   "authFactory",
   "profileController",
-  "userFactory"
+  "userFactory",
+  "uploadFactory"
 ]);
 
 chataApp.run(['Pubnub', "$rootScope", "$location", function(Pubnub, $rootScope, $location) {

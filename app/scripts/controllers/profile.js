@@ -1,7 +1,7 @@
 var profileController = angular.module('profileController', []);
 
-profileController.controller("profile", ['User', '$firebaseAuth', '$firebaseObject', '$scope', '$location', '$http',
-  function(User, $firebaseAuth, $firebaseObject, $scope, $location, $http) {
+profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth', '$firebaseObject', '$scope', '$location', '$http',
+  function(UploadImage, User, $firebaseAuth, $firebaseObject, $scope, $location, $http) {
     $scope.user = User.getUser();
     $scope.user.newPassword = null;
 
@@ -27,6 +27,28 @@ profileController.controller("profile", ['User', '$firebaseAuth', '$firebaseObje
 
     $scope.changeProfilePicture = function() {
       User.updateProfilePicture(picture);
+    };
+
+    // Upload a profile picture
+    $scope.uploadFiles = function(file) {
+      $scope.f = file;
+      if (file) {
+        // Check if image is valid
+        if (Upload.validUpload(file)) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+
+            // Set thumbnail
+            $('#uploadedPicture')
+              .attr('src', e.target.result)
+              .width(100)
+              .height(100);
+          };
+          reader.readAsDataURL(file);
+        } else {
+          $scope.throwError('Could not upload image');
+        }
+      }
     };
   }
 ]);

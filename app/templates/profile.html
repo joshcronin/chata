@@ -52,8 +52,7 @@
 		  </form>
 		  <br />
 		  <br />
-		    
-		  <form name="password" ng-submit="submit()">
+		  	  <form name="changePassword" ng-submit="submit()" novalidate>
 		  	 <div class="form-group">
             <label class="short-width" for="loginPassword">Current Password:&nbsp;&nbsp; • • • • • • • •</label>
             <button class="btn btn-success" id="passwordToggle" onClick="togglePasswordForm()">Change</button>
@@ -61,42 +60,47 @@
 		<div id="hidden1">
           <fieldset>
             <ng-form>
-			
-              <div class="form-group">
+			<p class="text-danger" ng-if="error.show"><small>{{error.message}}</small></p>
+             <!-- <div class="form-group">
                 <label class="sr-only" for="loginPassword">Current Password</label>
                 <input type="password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" name="pass" class="form-control" id="profilePassword" placeholder="Password" ng-model="user.password" required>
             <div ng-show="password.$submitted || password.pass.$touched">
               <span ng-show="password.pass.$error.required">Please enter a password.</span>
               <span ng-show="password.pass.$error.pattern">Password must have 8 character, 1 letter and 1 number.</span>
-            </div>
-              </div>
-              <div class="form-group">
+            </div> 
+              </div> -->
+			  <div class="two-col">
+              <div class="form-group col1" >
                 <label class="sr-only" for="newPassword">New Password</label>
-                <input type="password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" class="form-control" id="newPassword" placeholder="New Password" ng-model="user.password" name="newPass">
-                <div ng-show="password.$submitted || password.newPass.$touched">
-                        <span ng-show="password.newPass.$error.required">Enter your new password.</span>
-                        <span ng-show="password.pass.$error.pattern">Password must have 8 character, 1 letter and 1 number.</span>
+                <input type="password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" class="form-control" id="newPassword" placeholder="New Password" ng-model="changePassword.newPass" name="newPass" required>
+                <div ng-show="changePassword.$submitted || changePassword.newPass.$touched">
+                        <span ng-show="changePassword.newPass.$error.required">Enter your new password.</span>
+                        <span ng-show="changePassword.newPass.$error.pattern">Password must have 8 character, 1 letter and 1 number.</span>
                      </div> 
               </div>
-              <div class="form-group">
+              <div class="form-group col2" >
                 <label class="sr-only" for="confirmPassword">Confirm Password</label>
-                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" compare-to="user.password" ng-model="user.passwordConfirm" name="passcon">
-                <div ng-show="password.$submitted || (password.passCon.$touched && password.pass.$touched)">
-                   <div ng-show="password.$submitted || (register.passCon.$touched && register.pass.$touched)">
-					<div ng-show="password.passCon.$error.compareTo">Passwords must match.</div>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" compare-to="changePassword.newPass" ng-model="changePassword.conPass" name="conPass" required>
+                <div ng-show="changePassword.$submitted || (password.conPass.$touched && changePassword.pass.$touched)">
+                   <div ng-show="changePassword.$submitted || (password.conPass.$touched && changePassword.pass.$touched)">
+					<div ng-show="changePassword.conPass.$error.compareTo">Passwords must match.</div>
 					</div>
                 </div> 
               </div>
-          </fieldset>
+              </div>
+       
 		 
           <br>
 		  
           <div class="form-group">
             <button type="submit"  class="btn btn-success pull-right">Confirm</button>
           </div>
-		   </ng-form>
+          </ng-form>
+           </fieldset>
+		   
+		     
 		   </div>
-        </form>
+        </form> 
       </div>
     </section>
     <footer></footer>

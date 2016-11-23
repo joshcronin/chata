@@ -8,4 +8,32 @@
 		float: right;
 	}
 }
-	
+ #hiddenFileUploader {
+    display: none;
+  }
+
+  #uploadedPicture {
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    height: 100px;
+    width: 100px;
+    background-color: grey;
+  }
+  
+  .short-width{
+  width: 75%;
+  }
+  
+  #hidden1 {
+  display: none;
+  border: 1px #CCC solid;
+  padding: 10px;
+  padding-bottom: 40px;
+  }
+  
+  .outline{
+    border: 1px #CCC solid;
+  padding: 10px;
+  padding-bottom: 40px;
+  }

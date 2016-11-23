@@ -67,26 +67,17 @@
   }
 
   .ng-binding-edit {
-    font-family: inherit;
-    display: inline-block;
-    border: 2px solid grey;
-    border-radius: 5px;
-    padding: 5px 20px;
-    width: 90%;
-    margin-top: 2px;
-  }
-
-  .message-image {
-    height: 30px;
-    width: 40px;
-  }
-  
-    li.ng-binding.ng-scope {
     background: #bdf5d5;
     padding: 3px 18px;
     border-radius: 6px 0px 0px 6px;
     margin: 5px 0px;
 	border: 1px solid #d0d0d0;
 	border-right: 0;
-	}
+  }
+
+  .message-image {
+    height: 30px;
+    width: 40px;
+  }
+
 }

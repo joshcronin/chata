@@ -28,6 +28,33 @@ chataApp.run(['Pubnub', "$rootScope", "$location", function(Pubnub, $rootScope, 
       $location.path("/#/");
     }
   });
+
+  //Default profile image URL
+  $rootScope.profileImageURL = "/img/icon-profile.png";
+
+  //Set the profile image in nav bar
+  $rootScope.getProfileImage = function(firebaseAuth) {
+    // Gets picture from firebase
+    var storage = firebase.storage().ref('images/profile');
+    var uid = firebaseAuth().$getAuth().uid;
+    var profileRef = storage.child(uid);
+
+    //Get URL
+    profileRef.child('profile').getDownloadURL().then(function(url) {
+      //Store in scope
+      $rootScope.profileImageURL = url;
+      //Create an image object to preload the image
+      var img = new Image();
+      //Set the src
+      img.src = $rootScope.profileImageURL;
+      //On load, apply the scope
+      img.onload = $rootScope.$apply.bind($rootScope);
+    }).catch(function(error) {
+      //Fail silently
+      //console.error(error);
+    });
+  };
+
 }]);
 
 

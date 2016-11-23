@@ -29,10 +29,15 @@ chatController.controller("chat", ['Pubnub', '$pubnubChannel', '$firebaseAuth', 
       show: false //If true, message will be visible in form
     };
 
+    //Method to handle enter key
     $scope.enterToSend = function(keyEvent) {
-      if (keyEvent.which === 13) {
-        $scope.publish();
-        keyEvent.preventDefault();
+      //If enter key, but not shift key
+      if (keyEvent.keyCode == 13 && !keyEvent.shiftKey) {
+          //Prevent default behaviour 
+          keyEvent.preventDefault();
+          //Publish message
+          $scope.publish();
+        }
       }
     }
 

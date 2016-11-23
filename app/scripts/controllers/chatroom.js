@@ -1,7 +1,7 @@
 var chatController = angular.module('chatController', []);
 
-chatController.controller("chat", ['User', '$firebaseObject','Pubnub', '$pubnubChannel', '$firebaseAuth', '$scope', '$location', '$http',
-  function(User, $firebaseObject, Pubnub, $pubnubChannel, $firebaseAuth, $scope, $location, $http) {
+chatController.controller("chat", ['User','$rootScope', 'Pubnub', '$pubnubChannel', '$firebaseAuth', '$scope', '$location', '$http',
+  function(User, $rootScope, Pubnub, $pubnubChannel, $firebaseAuth, $scope, $location, $http) {
 
     //Get viewport height
     $scope.viewportHeight = window.innerHeight;
@@ -19,7 +19,7 @@ chatController.controller("chat", ['User', '$firebaseObject','Pubnub', '$pubnubC
     });
 
     $scope.messageList = $pubnubChannel('chata', {
-      autoload: 0
+      autoload: 10,
     });
 
     User.getUsername().then(function(user) {
@@ -80,5 +80,8 @@ chatController.controller("chat", ['User', '$firebaseObject','Pubnub', '$pubnubC
     $scope.cancelError = function() {
       $scope.error.show = false;
     };
+
+    //Get profile image URL
+    $rootScope.getProfileImage($firebaseAuth, 'profile_thumb');
   }
 ]);

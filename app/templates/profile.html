@@ -1,89 +1,102 @@
 <div class="form">
-<header>
-   <nav class="navbar navbar-default" ng-controller="navbar">
+  <header>
+    <nav class="navbar navbar-default" ng-controller="navbar">
       <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-center navbar-brand" href="/#/chatroom">
-              <img alt="Chata" src="img/logo.png">
-            </a>
-          </div>
-          <ul class="nav navbar-nav navbar-right">
-            <li class="chat">
-              <a href="/#/chatroom" title="Chatroom"><span class="sr-only">Chatroom</span></a>
-            </li>
-            <li class="logout">
-              <a href="/#/" ng-click="authObj.$signOut()" title="Logout"><span class="sr-only">Logout</span></a>
-            </li>
-          </ul>
+          <a class="navbar-center navbar-brand" href="/#/chatroom">
+            <img alt="Chata" src="img/logo.png">
+          </a>
+        </div>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="chat">
+            <a href="/#/chatroom" title="Chatroom"><span class="sr-only">Chatroom</span></a>
+          </li>
+          <li class="logout">
+            <a href="/#/" ng-click="authObj.$signOut()" title="Logout"><span class="sr-only">Logout</span></a>
+          </li>
+        </ul>
       </div>
-   </nav>
-</header>
-<article class="container">
-   <section class="page">
-      <div class="holder row">
-         <h1>Your Profile</h1>
-         <form method="POST" ng-submit="">
-            <p>Profile Picture (Optional)</p>
+    </nav>
+    </section>
+    <article class="container">
+      <section class="page">
+        <div class="holder">
+
+          <h1>Your Profile</h1>
+          <form method="POST" ng-submit="" class="outline">
+            <p>Profile Picture</p>
             <div class="form-group">
-               <img id="uploadedPicture" src="{{user.profileUrl}}" />
-               <div id="hiddenFileUploader">
-                  <input id="upfile" type="file" value="upload" onchange="readURL(this)" />
-               </div>
+              <img id="uploadedPicture" src="{{user.profileUrl}}" />
+              <div id="uploadBtn" class="btn btn-success" ng-click="getFile()">Click To Upload</div>
+              <div id="hiddenFileUploader">
+                <input id="upfile" type="file" value="upload" ngf-select="uploadFiles($file, $invalidFiles)" ng-model="user.picture" />
+              </div>
             </div>
             <br>
-            <div class="row">
-               <div class="form-group col-xs-12">
-                  <label class="sr-only" for="username">Username</label>
-                  <input type="text" class="form-control" id="username" placeholder="Username" ng-model="user.username">
-               </div>
-               <div class="form-group col-xs-12">
-                  <label class="sr-only" for="loginEmail">Email</label>
-                  <input type="email" class="form-control" id="loginEmail" placeholder="Email" ng-model="user.email">
-               </div>
+            <div class="form-group">
+              <label class="sr-only" for="loginEmail">Email</label>
+              <input type="email" class="form-control" id="loginEmail" placeholder="Email" ng-model="user.email">
             </div>
             <p class="text-danger" ng-if="error.show"><small>{{error.message}}</small></p>
-            <fieldset>
-               <ng-form>
-                  <div class="row">
-                     <div class="form-group col-xs-12">
-                        <label class="sr-only" for="loginPassword">Current Password</label>
-                        <input type="password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" class="form-control" id="loginPassword" placeholder="Current Password" ng-model="user.password">
-                        <!--<div ng-show="form.$submitted || form.pass.$touched">
-                           <span ng-show="form.pass.$error.required">Enter your current password.</span>
-                           <span ng-show="form.pass.$error.pattern">Password must have 8 character, 1 letter and 1 number.</span>
-                           </div> -->
-                     </div>
-                  </div>
-                  <div class="row">
-                     <div class="form-group col-xs-12 col-lg-6">
-                        <label class="sr-only" for="newPassword">New Password</label>
-                        <input type="password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" class="form-control" id="newPassword" placeholder="New Password" ng-model="user.newPassword">
-                        <!-- <div ng-show="form.$submitted || form.pass.$touched">
-                           <span ng-show="form.pass.$error.required">Enter your new password.</span>
-                           <span ng-show="form.pass.$error.pattern">Password must have 8 character, 1 letter and 1 number.</span>
-                           </div> -->
-                     </div>
-                     <div class="form-group col-xs-12 col-lg-6">
-                        <label class="sr-only" for="confirmPassword">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" ng-model="user.confirmPassword">
-                        <!-- <div ng-show="form.$submitted || (form.passCon.$touched && form.pass.$touched)">
-                           <div ng-show="form.passCon.$error.compareTo">Passwords must match.</div>
-                           </div> -->
-                     </div>
-                  </div>
-            </fieldset>
-            <br>
-            <div class="form-group col-xs-12 ">
-            <button type="submit" class="btn btn-success pull-right confirmBtn">Confirm</button>
+            <div class="form-group">
+              <label class="sr-only" for="username">Display Name</label>
+              <input placeholder="Display Name" type="text" class="form-control" id="username" ng-model="user.username">
             </div>
-            </ng-form>
-            <br>
-            <div class="form-group col-xs-12 ">
-               <!--<button type="submit" class="btn btn-success pull-right">Save Changes</button> -->
-               <div id="uploadBtn" class="btn btn-success pull-right saveChangesBtn " ng-click="">Save Changes</div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-success pull-right" ng-click="updateUser()">Save Changes</button>
+              <!-- <div id="uploadBtn" class="btn btn-success pull-right" ng-click="">Save Changes</div>-->
             </div>
-         </form>
-      </div>
-   </section>
-   <footer></footer>
-</article>
+            <br />
+            <br />
+            <div class="form-group">
+              <label class="short-width" for="loginPassword">Current Password:&nbsp;&nbsp; • • • • • • • •</label>
+              <button class="btn btn-success" id="passwordToggle" onClick="togglePasswordForm()">Change</button>
+            </div>
+            <div id="hidden1">
+              <fieldset>
+                <ng-form>
+                  <p class="text-danger" ng-if="error.show"><small>{{error.message}}</small></p>
+                  <!-- <div class="form-group">
+                <label class="sr-only" for="loginPassword">Current Password</label>
+                <input type="password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" name="pass" class="form-control" id="profilePassword" placeholder="Password" ng-model="user.password" required>
+            <div ng-show="password.$submitted || password.pass.$touched">
+              <span ng-show="password.pass.$error.required">Please enter a password.</span>
+              <span ng-show="password.pass.$error.pattern">Password must have 8 character, 1 letter and 1 number.</span>
+            </div>
+              </div> -->
+                  <div class="two-col">
+                    <div class="form-group col1">
+                      <label class="sr-only" for="newPassword">New Password</label>
+                      <input type="password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" class="form-control" id="newPassword" placeholder="New Password" ng-model="changePassword.newPass" name="newPass" required>
+                      <div ng-show="changePassword.$submitted || changePassword.newPass.$touched">
+                        <span ng-show="changePassword.newPass.$error.required">Enter your new password.</span>
+                        <span ng-show="changePassword.newPass.$error.pattern">Password must have 8 character, 1 letter and 1 number.</span>
+                      </div>
+                    </div>
+                    <div class="form-group col2">
+                      <label class="sr-only" for="confirmPassword">Confirm Password</label>
+                      <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" compare-to="changePassword.newPass" ng-model="changePassword.conPass" name="conPass" required>
+                      <div ng-show="changePassword.$submitted || (password.conPass.$touched && changePassword.pass.$touched)">
+                        <div ng-show="changePassword.$submitted || (password.conPass.$touched && changePassword.pass.$touched)">
+                          <div ng-show="changePassword.conPass.$error.compareTo">Passwords must match.</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <br>
+
+                  <div class="form-group">
+                    <button type="submit" class="btn btn-success pull-right" ng-click="changePassword()">Confirm</button>
+                  </div>
+                </ng-form>
+              </fieldset>
+
+
+            </div>
+          </form>
+        </div>
+      </section>
+      <footer></footer>
+    </article>

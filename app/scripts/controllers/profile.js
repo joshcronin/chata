@@ -12,10 +12,15 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
         $scope.changeProfilePicture();
         $scope.hasChangedProfile = false;
       }
-    }
+    };
+
+    $scope.changePassword = {
+      newPass: '', //The newPass field value
+      conPass: '' //The conPass field value
+    };
 
     $scope.changePassword = function() {
-      User.updatePassword($scope.user.newPassword).then(function() {
+      User.updatePassword($scope.changePassword.newPass).then(function() {
         console.log("Password changed successfully!");
       }).catch(function(error) {
         console.error("Error: ", error);
@@ -35,18 +40,23 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
     };
 
     $scope.changeProfilePicture = function() {
-      var picture = $('#uploadedPicture').attr('src').split(',')[1];
+      var picture = $('#uploadedPicture').attr('src');
       if (picture) {
         User.updateProfilePicture(picture);
       }
     };
+
+    $scope.getFile = function() {
+      document.getElementById("upfile").click();
+    };
+
 
     // Upload a profile picture
     $scope.uploadFiles = function(file) {
       $scope.f = file;
       if (file) {
         // Check if image is valid
-        if (Upload.validUpload(file)) {
+        if (UploadImage.validUpload(file)) {
           var reader = new FileReader();
           reader.onload = function(e) {
 
@@ -59,9 +69,21 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
           };
           reader.readAsDataURL(file);
         } else {
-          $scope.throwError('Could not upload image');
+          console.log('Could not upload image');
         }
       }
     };
   }
 ]);
+
+// Toggle the visibility of the password form
+function togglePasswordForm() {
+  if (document.getElementById('hidden1').style.display == 'block') {
+
+    document.getElementById('hidden1').style.display = "none";
+    document.getElementById('passwordToggle').textContent = "Change";
+  } else {
+    document.getElementById('hidden1').style.display = "block";
+    document.getElementById('passwordToggle').textContent = "Cancel";
+  }
+}

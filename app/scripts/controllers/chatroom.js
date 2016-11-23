@@ -33,11 +33,10 @@ chatController.controller("chat", ['Pubnub', '$pubnubChannel', '$firebaseAuth', 
     $scope.enterToSend = function(keyEvent) {
       //If enter key, but not shift key
       if (keyEvent.keyCode == 13 && !keyEvent.shiftKey) {
-          //Prevent default behaviour 
-          keyEvent.preventDefault();
-          //Publish message
-          $scope.publish();
-        }
+        //Prevent default behaviour 
+        keyEvent.preventDefault();
+        //Publish message
+        $scope.publish();
       }
     }
 

@@ -19,7 +19,7 @@ chatController.controller("chat", ['User','$rootScope', 'Pubnub', '$pubnubChanne
     });
 
     $scope.messageList = $pubnubChannel('chata', {
-      autoload: 10,
+      autoload: 0,
     });
 
     User.getUsername().then(function(user) {

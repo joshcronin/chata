@@ -29,6 +29,13 @@ chatController.controller("chat", ['Pubnub', '$pubnubChannel', '$firebaseAuth', 
       show: false //If true, message will be visible in form
     };
 
+    $scope.enterToSend = function(keyEvent) {
+      if (keyEvent.which === 13) {
+        $scope.publish();
+        keyEvent.preventDefault();
+      }
+    }
+
     $scope.publish = function() {
       $scope.cancelError();
       Pubnub.publish({

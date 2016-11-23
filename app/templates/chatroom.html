@@ -29,8 +29,10 @@
       <div class="row">
         <div class="main-chat col-md-12">
           <div class="main-panel">
-            <ul class="collection">
-              <li ng-repeat="message in messageList">{{message.content}}</li>
+            <ul class="row" id='username'>
+              <div class='collection' ng-repeat="message in messageList">
+                <li style='border-color: {{message.color}}'>{{message.username}}: {{message.content}}</li>
+              </div>
             </ul>
           </div>
         </div>
@@ -39,7 +41,7 @@
           <textarea class="message-panel full-height" ng-model='message'></textarea>
         </div>
         <div class="send-message col-md-2 col-xs-1">
-          <button type="button" class="btn btn-primary btn-lg" ng-click='publish()' ng-disabled='!message'>Send</button>
+          <button type="button" class="btn btn-primary btn-lg" ng-click='publish();displayUsername();' ng-disabled='!message'>Send</button>
         </div>
       </div>
     </section>

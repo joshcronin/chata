@@ -51,4 +51,12 @@
   .collection {
     list-style-type: none;
   }
+
+  .ng-binding {
+    font-family: inherit;
+    display: inline-block;
+    border: 2px solid grey;
+    border-radius: 5px;
+    padding: 5px 20px;
+  }
 }

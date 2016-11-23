@@ -1,13 +1,21 @@
 var chatController = angular.module('chatController', []);
 
-chatController.controller("chat", ['Pubnub', '$pubnubChannel', '$firebaseAuth', '$scope', '$location', '$http',
-  function(Pubnub, $pubnubChannel, $firebaseAuth, $scope, $location, $http) {
+chatController.controller("chat", ['User' '$firebaseObject','Pubnub', '$pubnubChannel', '$firebaseAuth', '$scope', '$location', '$http',
+  function(User, $firebaseObject, Pubnub, $pubnubChannel, $firebaseAuth, $scope, $location, $http) {
 
     $scope.messageList = $pubnubChannel('chata', {
       autoload: 0
     });
 
+    var nameRef = firebase.database().ref("/users/" + $firebaseAuth().$getAuth().uid + '/name/');
+    var user = $firebaseObject(nameRef);
+
+    user.$loaded().then(function(user) {
+      $scope.username = user.$value;
+    });
+
     $scope.message = ''; // Users message
+    $scope.username = ''; // Users username
 
     $scope.error = {
       message: "", //Message to be shown in form
@@ -18,7 +26,9 @@ chatController.controller("chat", ['Pubnub', '$pubnubChannel', '$firebaseAuth', 
       $scope.cancelError();
       Pubnub.publish({
           message: {
-            content: $scope.message
+            content: $scope.message,
+            username: $scope.username,
+            profilePic: User.getProfileUrl(),
           },
           channel: 'chata'
         },

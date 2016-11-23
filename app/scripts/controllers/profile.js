@@ -40,7 +40,7 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
     };
 
     $scope.changeProfilePicture = function() {
-      var picture = $('#uploadedPicture').attr('src').split(',')[1];
+      var picture = $('#uploadedPicture').attr('src');
       if (picture) {
         User.updateProfilePicture(picture);
       }

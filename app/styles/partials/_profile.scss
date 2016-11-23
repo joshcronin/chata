@@ -1,11 +1,13 @@
 @media (min-width: 768px){
-	#newPassword{
-		width:50%;
-		float: left;
+
+}
+
+@media (max-width:767px){
+	.confirmBtn{
+		margin-top: -5px
 	}
-	#confirmPassword{
-		width:50%;
-		float: right;
+	.saveChangesBtn{
+		margin-top: -5px;
 	}
 }
  #hiddenFileUploader {

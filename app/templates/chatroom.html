@@ -4,42 +4,41 @@
       <nav class="navbar navbar-default" ng-controller="navbar">
         <div class="container-fluid">
           <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
             <a class="navbar-center navbar-brand" href="/#/chatroom">
               <img alt="Chata" src="img/logo.png">
             </a>
           </div>
-          <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav navbar-right">
-              <li class="dropdown">
-                <a class="fill" href="/#/profile"></a>
-              </li>
-              <li class="logout"><a href="/#/" ng-click="authObj.$signOut()">Logout</a></li>
-            </ul>
-          </div>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="profile">
+              <a href="/#/profile" title="Profile"><span class="sr-only">Profile</span></a>
+            </li>
+            <li class="logout">
+              <a href="/#/" ng-click="authObj.$signOut()" title="Logout"><span class="sr-only">Logout</span></a>
+            </li>
+          </ul>
         </div>
       </nav>
     </section>
 
     <section class="container-fluid full-height">
       <div class="row">
-        <div class="main-chat col-md-12">
+        <div class="main-chat col-xs-12">
           <div class="main-panel">
             <ul class="collection">
               <li ng-repeat="message in messageList">{{message.content}}</li>
             </ul>
           </div>
         </div>
-        <p class="text-danger" ng-if="error.show"><small>{{error.message}}</small></p>
-        <div class="message-box col-md-10 col-sm-10 col-xs-8">
-          <textarea class="message-panel full-height" ng-model='message'></textarea>
+      </div>
+      <div class="row" ng-if="error.show">
+        <div class="col-xs-12">
+          <p class="text-danger"><small>{{error.message}}</small></p>
         </div>
-        <div class="send-message col-md-2 col-xs-1">
-          <button type="button" class="btn btn-primary btn-lg" ng-click='publish()' ng-disabled='!message'>Send</button>
+      </div>
+      <div class="row">
+        <div class="message-box col-xs-12">
+          <textarea class="message-panel full-height" placeholder="Send message" ng-model='message' ng-keypress="enterToSend($event)"></textarea>
+          <button type="button" class="btn btn-primary btn-lg" ng-click='publish()' ng-disabled='!message'><span class="glyphicon glyphicon-send" aria-hidden="true"></span><span class="sr-only">Send</span></button>
         </div>
       </div>
     </section>

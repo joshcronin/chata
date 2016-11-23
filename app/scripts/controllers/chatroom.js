@@ -3,6 +3,21 @@ var chatController = angular.module('chatController', []);
 chatController.controller("chat", ['Pubnub', '$pubnubChannel', '$firebaseAuth', '$scope', '$location', '$http',
   function(Pubnub, $pubnubChannel, $firebaseAuth, $scope, $location, $http) {
 
+    //Get viewport height
+    $scope.viewportHeight = window.innerHeight;
+
+    //On route loaded
+    $scope.$on('$viewContentLoaded', function(){
+      var messagePanelHeight = $scope.viewportHeight;
+      messagePanelHeight -= $('.navbar').outerHeight(true);//Header height
+      messagePanelHeight -= $('.message-box').outerHeight(true);//Message area height
+      messagePanelHeight -= 15;//Margin at the bottom
+
+      messagePanelHeight = Math.floor(messagePanelHeight);//Round down
+
+      $('.main-chat').height(messagePanelHeight);//Set the message panel height
+    });
+
     $scope.messageList = $pubnubChannel('chata', {
       autoload: 0
     });
@@ -13,6 +28,17 @@ chatController.controller("chat", ['Pubnub', '$pubnubChannel', '$firebaseAuth', 
       message: "", //Message to be shown in form
       show: false //If true, message will be visible in form
     };
+
+    //Method to handle enter key
+    $scope.enterToSend = function(keyEvent) {
+      //If enter key, but not shift key
+      if (keyEvent.keyCode == 13 && !keyEvent.shiftKey) {
+        //Prevent default behaviour 
+        keyEvent.preventDefault();
+        //Publish message
+        $scope.publish();
+      }
+    }
 
     $scope.publish = function() {
       $scope.cancelError();

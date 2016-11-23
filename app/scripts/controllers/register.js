@@ -1,7 +1,7 @@
 var registerController = angular.module('registerController', []);
 
-registerController.controller("register", ['$firebaseAuth', '$scope', '$location', '$http',
- function($firebaseAuth, $scope, $location, $http) {
+registerController.controller("register", ['UploadImage', 'User', '$firebaseAuth', '$scope', '$location', '$http',
+ function(UploadImage, User, $firebaseAuth, $scope, $location, $http) {
 
   $scope.error = {
     message: "", //Message to be shown in form
@@ -24,32 +24,15 @@ registerController.controller("register", ['$firebaseAuth', '$scope', '$location
     $firebaseAuth().$createUserWithEmailAndPassword($scope.user.email, $scope.user.password)
       .then(function(firebaseUser) {
         // Save the username
-        var ref = firebase.database().ref();
-        ref.child("users").child(firebaseUser.uid).set({
-          name: $scope.user.username
-        });
+        User.updateUsername($scope.user.username)
 
         // Save the users profile picture
         // Gets firebase references and picture
-        var storage = firebase.storage().ref();
-        var imagesRef = storage.child('images/profile');
         var picture = $('#uploadedPicture').attr('src').split(',')[1];
 
         if (picture) {
           // Uploads the file
-          var uploadTask = imagesRef.child(firebaseUser.uid + '/profile').putString(picture, 'base64');
-
-          uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-            function(snapshot) {
-              console.log(snapshot);
-            },
-            function(error) {
-              console.log(error);
-            },
-            function() {
-              console.log(uploadTask.snapshot.downloadURL);
-            }
-          );
+          User.updateProfilePicture(picture, firebaseUser.uid);
         }
       })
       .then(function(firebaseUser) {
@@ -81,7 +64,7 @@ registerController.controller("register", ['$firebaseAuth', '$scope', '$location
     $scope.f = file;
     if (file) {
       // Check if image is valid
-      if ($scope.validUpload(file)) {
+      if (UploadImage.validUpload(file)) {
         var reader = new FileReader();
         reader.onload = function(e) {
 
@@ -96,41 +79,5 @@ registerController.controller("register", ['$firebaseAuth', '$scope', '$location
         $scope.throwError('Could not upload image');
       }
     }
-  };
-
-  /**
-   * @param {File} File Object
-   * @return {boolean} if the upload is valid
-   */
-  $scope.validUpload = function(file) {
-    var ext = $scope.getExtension(file.name);
-    if ($scope.isImage(ext)) {
-      return true;
-    }
-    return false;
-  };
-
-  /**
-   * @param {File} File Object
-   * @return {String} the extension of the file
-   */
-  $scope.getExtension = function(file) {
-    var ext = file.split('.');
-    return ext[ext.length - 1];
-  };
-
-  /**
-   * @param {String} extension
-   * @return {boolean} if the file extension is an image type
-   */
-  $scope.isImage = function(ext) {
-    switch (ext.toLowerCase()) {
-      case 'jpg':
-      case 'gif':
-      case 'bmp':
-      case 'png':
-        return true;
-    }
-    return false;
   };
 }]);

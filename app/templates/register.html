@@ -6,16 +6,16 @@
         <h1>Register</h1>
         <form method="POST" ng-submit="submit()" name="register" novalidate>
           <p class="text-danger" ng-if="error.show"><small>{{error.message}}</small></p>
-
-          <div class="form-group">
+		
+		<div class="row">
+          <div class="form-group col-xs-12">
             <label class="sr-only" for="registerUsername">Username</label>
             <input type="text" name="uName" class="form-control" id="registerUsername" placeholder="Username" ng-model="user.username" required>
             <div ng-show="register.$submitted || register.uName.$touched">
               <div ng-show="register.uName.$error.required">Tell us your username.</div>
             </div>
           </div>
-
-          <div class="form-group">
+          <div class="form-group col-xs-12">
             <label class="sr-only" for="registerEmail">Email address</label>
             <input type="email" class="form-control" name="email" id="registerEmail" placeholder="Email" ng-model="user.email" required>
             <div ng-show="register.$submitted || register.email.$touched">
@@ -23,8 +23,10 @@
               <span ng-show="register.email.$error.email">This is not a valid email.</span>
             </div>
           </div>
-
-          <div class="form-group">
+		</div>	
+		
+		<div class="row">
+          <div class="form-group col-xs-12 col-lg-6">
             <label class="sr-only" for="registerPassword">Password</label>
             <input type="password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" name="pass" class="form-control" id="registerPassword" placeholder="Password" ng-model="user.password" required>
             <div ng-show="register.$submitted || register.pass.$touched">
@@ -32,15 +34,15 @@
               <span ng-show="register.pass.$error.pattern">Password must have 8 character, 1 letter and 1 number.</span>
             </div>
           </div>
-
-          <div class="form-group">
+		  
+          <div class="form-group col-xs-12 col-lg-6">
             <label class="sr-only" for="registerConfPassword">Confirm Password</label>
             <input type="password" name="passCon" class="form-control" id="registerConfPasswordPassword" compare-to="user.password" placeholder="Confirm Password" ng-model="user.passwordConfirm" required>
             <div ng-show="register.$submitted || (register.passCon.$touched && register.pass.$touched)">
               <div ng-show="register.passCon.$error.compareTo">Passwords must match.</div>
             </div>
           </div>
-
+		</div>
           <p>Profile Picture (Optional)</p>
           <div class="form-group">
             <img id="uploadedPicture" src="img/avatar.png" />

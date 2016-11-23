@@ -51,13 +51,28 @@ authFactory.factory("User", ["$firebaseAuth", "$firebaseObject", function($fireb
     updateUsername: function(username) {
       var userRef = firebase.database().ref("/users/" + $firebaseAuth().$getAuth().uid);
 
-      nameRef.set({
+      userRef.set({
         name: username
       });
     },
 
     updateProfilePicture: function(picture) {
-      
+      var storage = firebase.storage();
+      var pathReference = storage.ref(`images/profile/${$firebaseAuth().$getAuth().uid}/profile`);
+
+      var uploadTask = pathReference.putString(picture, 'base64');
+
+      uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
+        function(snapshot) {
+          console.log(snapshot);
+        },
+        function(error) {
+          console.log(error);
+        },
+        function() {
+          console.log(`Success: ${uploadTask.snapshot.downloadURL}`);
+        }
+      );
     },
   }
 

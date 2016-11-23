@@ -1,7 +1,7 @@
 var registerController = angular.module('registerController', []);
 
-registerController.controller("register", ['$firebaseAuth', '$scope', '$location', '$http',
- function($firebaseAuth, $scope, $location, $http) {
+registerController.controller("register", ['User', '$firebaseAuth', '$scope', '$location', '$http',
+ function(User, $firebaseAuth, $scope, $location, $http) {
 
   $scope.error = {
     message: "", //Message to be shown in form
@@ -24,32 +24,15 @@ registerController.controller("register", ['$firebaseAuth', '$scope', '$location
     $firebaseAuth().$createUserWithEmailAndPassword($scope.user.email, $scope.user.password)
       .then(function(firebaseUser) {
         // Save the username
-        var ref = firebase.database().ref();
-        ref.child("users").child(firebaseUser.uid).set({
-          name: $scope.user.username
-        });
+        User.updateUsername($scope.user.username)
 
         // Save the users profile picture
         // Gets firebase references and picture
-        var storage = firebase.storage().ref();
-        var imagesRef = storage.child('images/profile');
         var picture = $('#uploadedPicture').attr('src').split(',')[1];
 
         if (picture) {
           // Uploads the file
-          var uploadTask = imagesRef.child(firebaseUser.uid + '/profile').putString(picture, 'base64');
-
-          uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-            function(snapshot) {
-              console.log(snapshot);
-            },
-            function(error) {
-              console.log(error);
-            },
-            function() {
-              console.log(uploadTask.snapshot.downloadURL);
-            }
-          );
+          User.updateProfilePicture(picture, firebaseUser.uid);
         }
       })
       .then(function(firebaseUser) {

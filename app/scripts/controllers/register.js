@@ -1,7 +1,7 @@
 var registerController = angular.module('registerController', []);
 
-registerController.controller("register", ['$firebaseAuth', '$scope', '$location', '$http',
- function($firebaseAuth, $scope, $location, $http) {
+registerController.controller("register", ['UploadImage', 'User', '$firebaseAuth', '$scope', '$location', '$http',
+ function(UploadImage, User, $firebaseAuth, $scope, $location, $http) {
 
   $scope.error = {
     message: "", //Message to be shown in form
@@ -24,62 +24,15 @@ registerController.controller("register", ['$firebaseAuth', '$scope', '$location
     $firebaseAuth().$createUserWithEmailAndPassword($scope.user.email, $scope.user.password)
       .then(function(firebaseUser) {
         // Save the username
-        var ref = firebase.database().ref();
-        ref.child("users").child(firebaseUser.uid).set({
-          name: $scope.user.username
-        });
+        User.updateUsername($scope.user.username)
 
         // Save the users profile picture
         // Gets firebase references and picture
-        var storage = firebase.storage().ref();
-        var imagesRef = storage.child('images/profile');
-        var picture = $('#uploadedPicture').attr('src');//.split(',')[1];
+        var picture = $('#uploadedPicture').attr('src');
 
         if (picture) {
-
-          //Generate large image
-          $scope.resizeImage(picture, 350, 350).then(function(encodedImg) {
-            // Uploads the file
-            var uploadTask = imagesRef.child(firebaseUser.uid + '/profile').putString(encodedImg.split(',')[1], 'base64');
-
-            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-              function(snapshot) {
-                console.log(snapshot);
-              },
-              function(error) {
-                //Fail silently
-                //console.log(error);
-              },
-              function() {
-                console.log(uploadTask.snapshot.downloadURL);
-              }
-            );
-          }).catch(function(error) {
-            //Fail silently
-            //console.log(error);
-          });
-
-          //Generate small image
-          $scope.resizeImage(picture, 96, 96).then(function(encodedImg) {
-            // Uploads the file
-            var uploadTask = imagesRef.child(firebaseUser.uid + '/profile_thumb').putString(encodedImg.split(',')[1], 'base64');
-
-            uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-              function(snapshot) {
-                console.log(snapshot);
-              },
-              function(error) {
-                //Fail silently
-                //console.log(error);
-              },
-              function() {
-                console.log(uploadTask.snapshot.downloadURL);
-              }
-            );
-          }).catch(function(error) {
-            //Fail silently
-            //console.log(error);
-          });
+          // Uploads the file
+          User.updateProfilePicture(picture, firebaseUser.uid);
         }
       })
       .then(function(firebaseUser) {
@@ -111,7 +64,7 @@ registerController.controller("register", ['$firebaseAuth', '$scope', '$location
     $scope.f = file;
     if (file) {
       // Check if image is valid
-      if ($scope.validUpload(file)) {
+      if (UploadImage.validUpload(file)) {
         var reader = new FileReader();
         reader.onload = function(e) {
 
@@ -126,47 +79,6 @@ registerController.controller("register", ['$firebaseAuth', '$scope', '$location
         $scope.throwError('Could not upload image');
       }
     }
-  };
-
-  $scope.resizeImage = function(img, width, height) {
-    //Return a promise
-    return new window.Promise(function(resolve, reject) {
-      // create an off-screen canvas
-      var canvas = document.createElement('canvas'),
-      ctx = canvas.getContext('2d');
-
-      // set its dimension to target size
-      canvas.width = width;
-      canvas.height = height;
-
-      var image = new Image();
-      image.onload = function() {
-        //Check width and height of image
-        var nativeWidth = this.width,
-            nativeHeight = this.height;
-        var desiredWidth = 0,
-            desiredHeight = 0;
-        var offset = {left: 0, top: 0};
-
-        //Scale and position image in canvase
-        if (nativeWidth >= nativeHeight) {
-          desiredHeight = height;
-          desiredWidth = (nativeWidth / (nativeHeight / height));
-          offset.left = ((desiredWidth / 2) - width);
-        } else {
-          desiredWidth = width;
-          desiredHeight = (nativeHeight / (nativeWidth / width));
-          offset.top = ((desiredHeight / 2) - height);
-        }
-
-        ctx.drawImage(image, offset.left, offset.top, desiredWidth, desiredHeight);
-        resolve(canvas.toDataURL());
-      };
-      image.onerror = function() {
-        reject(Error("There was a problem"));
-      }
-      image.src = img;
-    });
   };
 
   /**

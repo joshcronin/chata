@@ -33,14 +33,14 @@ chataApp.run(['Pubnub', "$rootScope", "$location", function(Pubnub, $rootScope, 
   $rootScope.profileImageURL = "/img/icon-profile.png";
 
   //Set the profile image in nav bar
-  $rootScope.getProfileImage = function(firebaseAuth) {
+  $rootScope.getProfileImage = function(firebaseAuth, file) {
     // Gets picture from firebase
     var storage = firebase.storage().ref('images/profile');
     var uid = firebaseAuth().$getAuth().uid;
     var profileRef = storage.child(uid);
 
     //Get URL
-    profileRef.child('profile').getDownloadURL().then(function(url) {
+    profileRef.child(file).getDownloadURL().then(function(url) {
       //Store in scope
       $rootScope.profileImageURL = url;
       //Create an image object to preload the image

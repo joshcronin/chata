@@ -24,7 +24,7 @@
       <div class="row">
         <div class="main-chat col-xs-12">
           <div class="main-panel">
-            <ul class="row" id='username'>
+            <ul id='username'>
               <div class='collection' ng-repeat="message in messageList">
                 <img class='message-image' src={{message.profilePic}}>
                 <li class='ng-binding-edit' style='border-color: {{message.color}}'>{{message.username}}: {{message.content}}</li>

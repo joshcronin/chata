@@ -15,7 +15,7 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
     }
 
     $scope.changePassword = function() {
-      User.updatePassword($scope.newPassword).then(function() {
+      User.updatePassword($scope.user.newPassword).then(function() {
         console.log("Password changed successfully!");
       }).catch(function(error) {
         console.error("Error: ", error);
@@ -23,7 +23,7 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
     };
 
     $scope.changeEmail = function() {
-      User.updateEmail($scope.email).then(function() {
+      User.updateEmail($scope.user.email).then(function() {
         console.log("Email changed successfully!");
       }).catch(function(error) {
         console.error("Error: ", error);
@@ -35,7 +35,10 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
     };
 
     $scope.changeProfilePicture = function() {
-      User.updateProfilePicture(picture);
+      var picture = $('#uploadedPicture').attr('src').split(',')[1];
+      if (picture) {
+        User.updateProfilePicture(picture);
+      }
     };
 
     // Upload a profile picture

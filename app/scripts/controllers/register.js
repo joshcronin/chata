@@ -141,7 +141,25 @@ registerController.controller("register", ['$firebaseAuth', '$scope', '$location
 
       var image = new Image();
       image.onload = function() {
-        ctx.drawImage(image, 0, 0, width, height);
+        //Check width and height of image
+        var nativeWidth = this.width,
+            nativeHeight = this.height;
+        var desiredWidth = 0,
+            desiredHeight = 0;
+        var offset = {left: 0, top: 0};
+
+        //Scale and position image in canvase
+        if (nativeWidth >= nativeHeight) {
+          desiredHeight = height;
+          desiredWidth = (nativeWidth / (nativeHeight / height));
+          offset.left = ((desiredWidth / 2) - width);
+        } else {
+          desiredWidth = width;
+          desiredHeight = (nativeHeight / (nativeWidth / width));
+          offset.top = ((desiredHeight / 2) - height);
+        }
+
+        ctx.drawImage(image, offset.left, offset.top, desiredWidth, desiredHeight);
         resolve(canvas.toDataURL());
       };
       image.onerror = function() {

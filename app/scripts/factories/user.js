@@ -127,14 +127,17 @@ authFactory.factory("User", ["$firebaseAuth", "$firebaseObject", function($fireb
           var offset = {left: 0, top: 0};
 
           //Scale and position image in canvase
-          if (nativeWidth >= nativeHeight) {
+          if (nativeWidth == nativeHeight) {
+            desiredHeight = height;
+            desiredWidth = width;
+          } else if (nativeWidth > nativeHeight) {
             desiredHeight = height;
             desiredWidth = (nativeWidth / (nativeHeight / height));
-            offset.left = ((desiredWidth / 2) - width);
+            offset.left = -((desiredWidth - width) / 2);
           } else {
             desiredWidth = width;
             desiredHeight = (nativeHeight / (nativeWidth / width));
-            offset.top = ((desiredHeight / 2) - height);
+            offset.top = -((desiredHeight - height) / 2);
           }
 
           ctx.drawImage(image, offset.left, offset.top, desiredWidth, desiredHeight);

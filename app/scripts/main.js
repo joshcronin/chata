@@ -16,6 +16,7 @@ var chataApp = angular.module("chataApp", ["ngRoute",
 ]);
 
 chataApp.run(['Pubnub', "$rootScope", "$location", function(Pubnub, $rootScope, $location) {
+  // Initialise out Pubnub service
   Pubnub.init({
     publishKey: 'pub-c-81e89e4d-53aa-4a63-a79d-f5515cedec4e',
     subscribeKey: 'sub-c-8ebd3efa-9f52-11e6-aff8-0619f8945a4f'

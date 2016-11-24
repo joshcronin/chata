@@ -24,7 +24,7 @@ registerController.controller("register", ['UploadImage', 'User', '$firebaseAuth
     $firebaseAuth().$createUserWithEmailAndPassword($scope.user.email, $scope.user.password)
       .then(function(firebaseUser) {
         // Save the username
-        User.updateUsername($scope.user.username)
+        User.updateUsername($scope.user.username);
 
         // Save the users profile picture
         // Gets firebase references and picture
@@ -79,41 +79,5 @@ registerController.controller("register", ['UploadImage', 'User', '$firebaseAuth
         $scope.throwError('Could not upload image');
       }
     }
-  };
-
-  /**
-   * @param {File} File Object
-   * @return {boolean} if the upload is valid
-   */
-  $scope.validUpload = function(file) {
-    var ext = $scope.getExtension(file.name);
-    if ($scope.isImage(ext)) {
-      return true;
-    }
-    return false;
-  };
-
-  /**
-   * @param {File} File Object
-   * @return {String} the extension of the file
-   */
-  $scope.getExtension = function(file) {
-    var ext = file.split('.');
-    return ext[ext.length - 1];
-  };
-
-  /**
-   * @param {String} extension
-   * @return {boolean} if the file extension is an image type
-   */
-  $scope.isImage = function(ext) {
-    switch (ext.toLowerCase()) {
-      case 'jpg':
-      case 'gif':
-      case 'bmp':
-      case 'png':
-        return true;
-    }
-    return false;
   };
 }]);

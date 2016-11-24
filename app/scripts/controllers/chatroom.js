@@ -18,10 +18,18 @@ chatController.controller("chat", ['User','$rootScope', 'Pubnub', '$pubnubChanne
       $('.main-chat').height(messagePanelHeight);//Set the message panel height
     });
 
+    /**
+     * @type Array
+     * Subscribes to the chata channel to receive messages
+     */
     $scope.messageList = $pubnubChannel('chata', {
       autoload: 0,
     });
 
+    /**
+     * @type {String} Username
+     * Sets the users username
+     */
     User.getUsername().then(function(user) {
       $scope.username = user.name;
     });
@@ -29,6 +37,10 @@ chatController.controller("chat", ['User','$rootScope', 'Pubnub', '$pubnubChanne
     $scope.message = ''; // Users message
     $scope.username = ''; // Users username
 
+    /**
+     * @type {String} email of the user
+     * Sets the users username
+     */
     User.getProfileUrl().then(function(url) {
       $scope.profileUrl = url;
     });
@@ -47,8 +59,11 @@ chatController.controller("chat", ['User','$rootScope', 'Pubnub', '$pubnubChanne
         //Publish message
         $scope.publish();
       }
-    }
+    };
 
+    /**
+     * Publishes a message
+     */
     $scope.publish = function() {
       $scope.cancelError();
       Pubnub.publish({
@@ -68,7 +83,7 @@ chatController.controller("chat", ['User','$rootScope', 'Pubnub', '$pubnubChanne
           }
         }
       );
-    }
+    };
 
     //Method to throw error
     $scope.throwError = function(error) {

@@ -2,9 +2,12 @@ var profileController = angular.module('profileController', []);
 
 profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth', '$firebaseObject', '$scope', '$location', '$http',
   function(UploadImage, User, $firebaseAuth, $firebaseObject, $scope, $location, $http) {
-    $scope.user = User.getUser();
-    $scope.hasChangedProfile = false;
+    $scope.user = User.getUser(); // User Object fields
+    $scope.hasChangedProfile = false; // Flag to update user profile picture or not
 
+    /**
+    * Updates all user fields
+    */
     $scope.updateUser = function() {
       $scope.changeEmail();
       $scope.changeUsername();
@@ -19,6 +22,9 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
       conPass: '' //The conPass field value
     };
 
+    /**
+    * Updates user password
+    */
     $scope.changePassword = function() {
       User.updatePassword($scope.changePassword.newPass).then(function() {
         console.log("Password changed successfully!");
@@ -27,6 +33,9 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
       });
     };
 
+    /**
+    * Updates user email
+    */
     $scope.changeEmail = function() {
       User.updateEmail($scope.user.email).then(function() {
         console.log("Email changed successfully!");
@@ -35,10 +44,16 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
       });
     };
 
+    /**
+    * Updates user username
+    */
     $scope.changeUsername = function() {
       User.updateUsername($scope.user.username);
     };
 
+    /**
+    * Updates user profile picture
+    */
     $scope.changeProfilePicture = function() {
       var picture = $('#uploadedPicture').attr('src');
       if (picture) {

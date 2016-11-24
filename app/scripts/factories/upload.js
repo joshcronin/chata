@@ -1,5 +1,6 @@
 var uploadFactory = angular.module('uploadFactory', []);
 
+// Factory to validate an image upload
 uploadFactory.factory("UploadImage", [function() {
   return {
     /**
@@ -37,5 +38,5 @@ uploadFactory.factory("UploadImage", [function() {
       }
       return false;
     },
-  }
+  };
 }]);

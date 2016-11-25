@@ -33,16 +33,16 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
       }
     };
 
-    $scope.changePassword = {
-      newPass: '', //The newPass field value
+    $scope.password = {
+      newPass: 'hello', //The newPass field value
       conPass: '' //The conPass field value
     };
 
     /**
      * Updates user password
      */
-    $scope.changePassword = function() {
-      User.updatePassword($scope.changePassword.newPass).then(function() {
+    $scope.updatePassword = function() {
+      User.updatePassword($scope.password.newPass).then(function() {
         console.log("Password changed successfully!");
         document.getElementById('hidden1').style.display = "none";
         document.getElementById('passwordToggle').textContent = "Change";

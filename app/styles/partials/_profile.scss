@@ -3,13 +3,16 @@
 	.confirmBtn {
 		margin-top: -5px;
 	}
+
 	.saveChangesBtn {
 		margin-top: -5px;
 	}
 }
+
 #hiddenFileUploader {
 	display: none;
 }
+
 #uploadedPicture {
 	float: left;
 	margin-right: 20px;
@@ -18,20 +21,26 @@
 	width: 100px;
 	background-color: grey;
 }
+
 .short-width {
 	width: 35%;
 	margin-right: 10px;
 }
+
 #hidden1 {
 	display: none;
-	border: 1px #CCC solid;
-	padding: 10px 10px 40px;
 }
+
+.change-password {
+	text-align: left;
+	margin-top: 5px;
+}
+
 .outline {
 	border: 1px #CCC solid;
 	padding: 10px 10px 40px;
 }
 
 .passwordConf {
-float: right;
+	float: right;
 }

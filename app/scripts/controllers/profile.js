@@ -3,7 +3,10 @@ var profileController = angular.module('profileController', []);
 profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth', '$firebaseObject', '$scope', '$location', '$http',
   function(UploadImage, User, $firebaseAuth, $firebaseObject, $scope, $location, $http) {
     $scope.user = User.getUser(); // User Object fields
-    $scope.hasChangedProfile = false; // Flag to update user profile picture or not
+    $scope.hasChangedProfile = null; // Flag to update user profile picture or not
+	$scope.emailChangeSucceeded = null;
+	$scope.usernameChangeSucceeded = null;
+	$scope.profileChangeSucceeded = null;
 
     $scope.error = {
       message: "", //Message to be shown in form
@@ -31,8 +34,54 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
         $scope.changeProfilePicture();
         $scope.hasChangedProfile = false;
       }
+	  $scope.successOrFailure();
     };
+	
+	$scope.successTextAlert = "";
+    $scope.showSuccessAlert = false;
+	$scope.failureTextAlert = "";
+	$scope.showFailureAlert = false;
+	$scope.infoTextAlert = "";
+	$scope.showInfoAlert = false;
+	
+	$scope.successOrFailure = function () {
+		$scope.successTextAlert = "";
+		$scope.failureTextAlert = "";
+		
+		if ($scope.emailChangeSucceeded == null && $scope.usernameChangeSucceeded == null && $scope.profileChangeSucceeded == null){
+			$scope.infoTextAlert = "No fields were updated as no changes were detected";
+			$scope.showInfoAlert = true;
+		}
+		if ($scope.emailChangeSucceeded || $scope.usernameChangeSucceeded || $scope.profileChangeSucceeded )
+		{
+			$scope.showSuccessAlert = true;
+			if ($scope.emailChangeSucceeded)
+			{
+				$scope.successTextAlert += "Email change succeeded. "
+			}
+			if ($scope.usernameChangeSucceeded)
+			{
+				$scope.successTextAlert += "Username change succeeded. "
+			}
+			if ($scope.profileChangeSucceeded)
+			{
+				$scope.successTextAlert += "Profile picture change succeded."
+			}
+		}
+		
+		$scope.emailChangeSucceeded = null;
+		$scope.usernameChangeSucceeded = null;
+		$scope.profileChangeSucceeded = null;
+		
+	}
+	
 
+
+    // switch flag
+	$scope.switchBool = function (value) {
+        $scope[value] = !$scope[value];
+    };
+	
     $scope.password = {
       newPass: '', //The newPass field value
       conPass: '' //The conPass field value
@@ -48,8 +97,12 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
         document.getElementById('passwordToggle').textContent = "Change";
         $scope.password.newPass = null;
         $scope.password.oldPass = null;
+		$scope.showSuccessAlert = true;
+		$scope.successTextAlert = "Password changed successfully";
       }).catch(function(error) {
         console.error("Error: ", error);
+		$scope.showFailureAlert = true;
+		$scope.failureTextAlert = "Couldn't update password, please try again";
       });
     };
 
@@ -59,6 +112,7 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
     $scope.changeEmail = function() {
       User.updateEmail($scope.user.email).then(function() {
         console.log("Email changed successfully!");
+		$scope.emailChangeSucceeded = true;
       }).catch(function(error) {
         console.error("Error: ", error);
       });
@@ -69,6 +123,7 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
      */
     $scope.changeUsername = function() {
       User.updateUsername($scope.user.username);
+	  $scope.usernameChangeSucceeded = true;
     };
 
     /**
@@ -78,6 +133,7 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
       var picture = $('#uploadedPicture').attr('src');
       if (picture) {
         User.updateProfilePicture(picture);
+		$scope.profileChangeSucceeded = true;
       }
     };
 
@@ -104,6 +160,7 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
             $scope.hasChangedProfile = true;
           };
           reader.readAsDataURL(file);
+		  
         } else {
           $scope.throwError('Could not upload image');
         }

@@ -5,9 +5,25 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
     $scope.user = User.getUser(); // User Object fields
     $scope.hasChangedProfile = false; // Flag to update user profile picture or not
 
+    $scope.error = {
+      message: "", //Message to be shown in form
+      show: false //If true, message will be visible in form
+    };
+
+    //Method to throw error
+    $scope.throwError = function(error) {
+      $scope.error.message = error || 'Something went wrong. Please try again';
+      $scope.error.show = true;
+    };
+
+    //Method to cancel error
+    $scope.cancelError = function() {
+      $scope.error.show = false;
+    };
+
     /**
-    * Updates all user fields
-    */
+     * Updates all user fields
+     */
     $scope.updateUser = function() {
       $scope.changeEmail();
       $scope.changeUsername();
@@ -17,27 +33,29 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
       }
     };
 
-    $scope.changePassword = {
+    $scope.password = {
       newPass: '', //The newPass field value
       conPass: '' //The conPass field value
     };
 
     /**
-    * Updates user password
-    */
-    $scope.changePassword = function() {
-      User.updatePassword($scope.changePassword.newPass).then(function() {
+     * Updates user password
+     */
+    $scope.updatePassword = function() {
+      User.updatePassword($scope.password.newPass).then(function() {
         console.log("Password changed successfully!");
-		document.getElementById('hidden1').style.display = "none";
-		document.getElementById('passwordToggle').textContent = "Change";
+        document.getElementById('hidden1').style.display = "none";
+        document.getElementById('passwordToggle').textContent = "Change";
+        $scope.password.newPass = null;
+        $scope.password.oldPass = null;
       }).catch(function(error) {
         console.error("Error: ", error);
       });
     };
 
     /**
-    * Updates user email
-    */
+     * Updates user email
+     */
     $scope.changeEmail = function() {
       User.updateEmail($scope.user.email).then(function() {
         console.log("Email changed successfully!");
@@ -47,15 +65,15 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
     };
 
     /**
-    * Updates user username
-    */
+     * Updates user username
+     */
     $scope.changeUsername = function() {
       User.updateUsername($scope.user.username);
     };
 
     /**
-    * Updates user profile picture
-    */
+     * Updates user profile picture
+     */
     $scope.changeProfilePicture = function() {
       var picture = $('#uploadedPicture').attr('src');
       if (picture) {
@@ -72,6 +90,7 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
     $scope.uploadFiles = function(file) {
       $scope.f = file;
       if (file) {
+        $scope.cancelError();
         // Check if image is valid
         if (UploadImage.validUpload(file)) {
           var reader = new FileReader();
@@ -86,7 +105,7 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
           };
           reader.readAsDataURL(file);
         } else {
-          console.log('Could not upload image');
+          $scope.throwError('Could not upload image');
         }
       }
     };

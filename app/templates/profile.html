@@ -23,7 +23,8 @@
         <div class="holder">
 
           <h1>Your Profile</h1>
-          <form method="POST" ng-submit="" class="outline">
+          <form method="POST" name='profile' ng-submit="updateUser()" class="outline">
+            <p class="text-danger" ng-if="error.show"><small>{{error.message}}</small></p>
             <p>Profile Picture</p>
             <div class="form-group">
               <img id="uploadedPicture" src="{{user.profileUrl}}" />
@@ -35,67 +36,57 @@
             <br>
             <div class="form-group">
               <label class="sr-only" for="loginEmail">Email</label>
-              <input type="email" class="form-control" id="loginEmail" placeholder="Email" ng-model="user.email">
+              <input type="email" name="email" class="form-control" id="loginEmail" placeholder="Email" ng-model="user.email" required>
+              <div ng-show="profile.$submitted || profile.email.$touched">
+                <span ng-show="profile.email.$error.required">Tell us your email.</span>
+                <span ng-show="profile.email.$error.email">This is not a valid email.</span>
+              </div>
             </div>
-            <p class="text-danger" ng-if="error.show"><small>{{error.message}}</small></p>
             <div class="form-group">
               <label class="sr-only" for="username">Display Name</label>
-              <input placeholder="Display Name" type="text" class="form-control" id="username" ng-model="user.username">
+              <input placeholder="Display Name" name="displayName" type="text" class="form-control" id="username" ng-model="user.username" required>
+              <div ng-show="profile.$submitted || profile.displayName.$touched">
+                <div ng-show="profile.displayName.$error.required">Tell us your username.</div>
+              </div>
             </div>
             <div class="form-group">
-              <button type="submit" class="btn btn-success pull-right" ng-click="updateUser()">Save Changes</button>
-              <!-- <div id="uploadBtn" class="btn btn-success pull-right" ng-click="">Save Changes</div>-->
+              <button type="submit" class="btn btn-success pull-right" ng-disabled="profile.$invalid">Save Changes</button>
             </div>
             <br />
             <br />
+          </form>
+          <div class="form-group change-password">
+            <label class="short-width" for="loginPassword">Current Password:</label><label>• • • • • • • •</label>
+            <button class="btn btn-success pull-right" id="passwordToggle" onClick="togglePasswordForm()">Change</button>
+          </div>
+          <div id="hidden1">
+          <form method="POST" name='changePassword' ng-submit="updatePassword()" class="outline">
+            <p class="text-danger" ng-if="error.show"><small>{{error.message}}</small></p>
+            <div class="two-col">
+              <div class="form-group col1">
+                <label class="sr-only" for="newPassword">New Password</label>
+                <input type="password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" class="form-control" id="newPassword" placeholder="New Password" ng-model="password.newPass" name="newPass" required>
+                <div ng-show="changePassword.$submitted || changePassword.newPass.$touched">
+                  <span ng-show="changePassword.newPass.$error.required">Enter your new password.</span>
+                  <span ng-show="changePassword.newPass.$error.pattern">Password must have 8 character, 1 letter and 1 number.</span>
+                </div>
+              </div>
+              <div class="form-group col2">
+                <label class="sr-only" for="confirmPassword">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" compare-to="password.newPass" ng-model="password.conPass" name="conPass" required>
+                <div ng-show="changePassword.$submitted || (changePassword.conPass.$touched && changePassword.newPass.$touched)">
+                  <div ng-show="changePassword.$submitted || (changePassword.conPass.$touched && changePassword.newPass.$touched)">
+                    <div ng-show="changePassword.conPass.$error.compareTo">Passwords must match.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
             <div class="form-group">
-              <label class="short-width" for="loginPassword">Current Password:</label><label>• • • • • • • •</label>
-              <button class="btn btn-success pull-right" id="passwordToggle" onClick="togglePasswordForm()">Change</button>
-            </div>
-            <div id="hidden1">
-              <fieldset>
-                <ng-form>
-                  <p class="text-danger" ng-if="error.show"><small>{{error.message}}</small></p>
-                  <!-- <div class="form-group">
-                <label class="sr-only" for="loginPassword">Current Password</label>
-                <input type="password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" name="pass" class="form-control" id="profilePassword" placeholder="Password" ng-model="user.password" required>
-            <div ng-show="password.$submitted || password.pass.$touched">
-              <span ng-show="password.pass.$error.required">Please enter a password.</span>
-              <span ng-show="password.pass.$error.pattern">Password must have 8 character, 1 letter and 1 number.</span>
-            </div>
-              </div> -->
-                  <div class="two-col">
-                    <div class="form-group col1">
-                      <label class="sr-only" for="newPassword">New Password</label>
-                      <input type="password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" class="form-control" id="newPassword" placeholder="New Password" ng-model="changePassword.newPass" name="newPass" required>
-                      <div ng-show="changePassword.$submitted || changePassword.newPass.$touched">
-                        <span ng-show="changePassword.newPass.$error.required">Enter your new password.</span>
-                        <span ng-show="changePassword.newPass.$error.pattern">Password must have 8 character, 1 letter and 1 number.</span>
-                      </div>
-                    </div>
-                    <div class="form-group col2">
-                      <label class="sr-only" for="confirmPassword">Confirm Password</label>
-                      <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" compare-to="changePassword.newPass" ng-model="changePassword.conPass" name="conPass" required>
-                      <div ng-show="changePassword.$submitted || (password.conPass.$touched && changePassword.pass.$touched)">
-                        <div ng-show="changePassword.$submitted || (password.conPass.$touched && changePassword.pass.$touched)">
-                          <div ng-show="changePassword.conPass.$error.compareTo">Passwords must match.</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-
-                  <br>
-
-                  <div class="form-group">
-                    <button type="submit" class="btn btn-success pull-right" ng-click="changePassword()">Confirm</button>
-                  </div>
-                </ng-form>
-              </fieldset>
-
-
+              <button type="submit" class="btn btn-success pull-right" ng-disabled="changePassword.$invalid">Confirm</button>
             </div>
           </form>
+        </div>
         </div>
       </section>
       <footer></footer>

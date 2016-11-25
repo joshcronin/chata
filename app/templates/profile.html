@@ -55,6 +55,38 @@
             <br />
             <br />
           </form>
+          <div class="form-group change-password">
+            <label class="short-width" for="loginPassword">Current Password:</label><label>• • • • • • • •</label>
+            <button class="btn btn-success pull-right" id="passwordToggle" onClick="togglePasswordForm()">Change</button>
+          </div>
+          <div id="hidden1">
+          <form method="POST" name='changePassword' ng-submit="updatePassword()" class="outline">
+            <p class="text-danger" ng-if="error.show"><small>{{error.message}}</small></p>
+            <div class="two-col">
+              <div class="form-group col1">
+                <label class="sr-only" for="newPassword">New Password</label>
+                <input type="password" ng-pattern="/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/" class="form-control" id="newPassword" placeholder="New Password" ng-model="password.newPass" name="newPass" required>
+                <div ng-show="changePassword.$submitted || changePassword.newPass.$touched">
+                  <span ng-show="changePassword.newPass.$error.required">Enter your new password.</span>
+                  <span ng-show="changePassword.newPass.$error.pattern">Password must have 8 character, 1 letter and 1 number.</span>
+                </div>
+              </div>
+              <div class="form-group col2">
+                <label class="sr-only" for="confirmPassword">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" compare-to="password.newPass" ng-model="password.conPass" name="conPass" required>
+                <div ng-show="changePassword.$submitted || (changePassword.conPass.$touched && changePassword.newPass.$touched)">
+                  <div ng-show="changePassword.$submitted || (changePassword.conPass.$touched && changePassword.newPass.$touched)">
+                    <div ng-show="changePassword.conPass.$error.compareTo">Passwords must match.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="form-group">
+              <button type="submit" class="btn btn-success pull-right" ng-disabled="changePassword.$invalid">Confirm</button>
+            </div>
+          </form>
+        </div>
         </div>
       </section>
       <footer></footer>

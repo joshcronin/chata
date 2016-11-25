@@ -60,9 +60,14 @@ chataApp.run(['Pubnub', "$rootScope", "$location", function(Pubnub, $rootScope, 
 
 
 
-chataApp.config(['$locationProvider', '$routeProvider', '$sceProvider',
-  function config($locationProvider, $routeProvider, $sceProvider) {
-    $sceProvider.enabled(false);
+chataApp.config(['$locationProvider', '$routeProvider', '$sceDelegateProvider',
+  function config($locationProvider, $routeProvider, $sceDelegateProvider) {
+    $sceDelegateProvider.resourceUrlWhitelist([
+      // Allow same origin resource loads.
+      'self',
+      // Allow loading from our profile pictures domain.
+      'https://firebasestorage.googleapis.com/**'
+    ]);
     $routeProvider
       .when('/', {
         templateUrl: 'templates/login.html',

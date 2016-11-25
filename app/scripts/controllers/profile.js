@@ -3,7 +3,7 @@ var profileController = angular.module('profileController', []);
 profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth', '$firebaseObject', '$scope', '$location', '$http',
   function(UploadImage, User, $firebaseAuth, $firebaseObject, $scope, $location, $http) {
     $scope.user = User.getUser(); // User Object fields
-    $scope.hasChangedProfile = null; // Flag to update user profile picture or not
+    $scope.hasChangedProfile = false; // Flag to update user profile picture or not
 	$scope.emailChangeSucceeded = null;
 	$scope.usernameChangeSucceeded = null;
 	$scope.profileChangeSucceeded = null;

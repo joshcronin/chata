@@ -27,7 +27,7 @@
             <ul id='username'>
               <div class='collection' ng-repeat="message in messageList">
                 <img class='message-image' src={{message.profilePic}}>
-                <li class='ng-binding-edit' style='border-color: {{message.color}}'>{{message.username}}: {{message.content}}</li>
+                <li class='ng-binding-edit' ng-class-odd="'striped'" style='border-color: {{message.color}}'>{{message.username}}: {{message.content}}</li>
               </div>
             </ul>
           </div>

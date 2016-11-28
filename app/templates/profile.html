@@ -21,7 +21,12 @@
     <article class="container">
       <section class="page">
         <div class="holder">
-
+			<div class="alert alert-success" ng-show="showSuccessAlert">
+			<button type="button" class="close" data-ng-click="switchBool('showSuccessAlert')">×</button> <strong>Done!</strong> {{successTextAlert}}</div>
+			<div class="alert alert-danger" ng-show="showFailureAlert">
+			<button type="button" class="close" data-ng-click="switchBool('showFailureAlert')">×</button> <strong>Error!</strong> {{failureTextAlert}}</div>
+			<div class="alert alert-info" ng-show="showInfoAlert">
+			<button type="button" class="close" data-ng-click="switchBool('showInfoAlert')">×</button> <strong>Info:</strong> {{infoTextAlert}}</div>
           <h1>Your Profile</h1>
           <form method="POST" name='profile' ng-submit="updateUser()" class="outline">
             <p class="text-danger" ng-if="error.show"><small>{{error.message}}</small></p>

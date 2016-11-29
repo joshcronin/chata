@@ -28,32 +28,39 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
      * Updates all user fields
      */
     $scope.updateUser = function() {
-      $scope.changeEmail();
-      $scope.changeUsername();
+      $scope.emailChange = function() {
+        $scope.changeEmail();
+      }
+      $scope.usernameChange = function() {
+        $scope.changeUsername();
+      }
+
       if ($scope.hasChangedProfile) {
         $scope.changeProfilePicture();
         $scope.hasChangedProfile = false;
       }
 	  $scope.successOrFailure();
     };
-	
+
 	$scope.successTextAlert = "";
     $scope.showSuccessAlert = false;
 	$scope.failureTextAlert = "";
 	$scope.showFailureAlert = false;
 	$scope.infoTextAlert = "";
 	$scope.showInfoAlert = false;
-	
+
 	$scope.successOrFailure = function () {
 		$scope.successTextAlert = "";
 		$scope.failureTextAlert = "";
-		
+
 		if ($scope.emailChangeSucceeded == null && $scope.usernameChangeSucceeded == null && $scope.profileChangeSucceeded == null){
 			$scope.infoTextAlert = "No fields were updated as no changes were detected";
 			$scope.showInfoAlert = true;
+      $scope.showSuccessAlert = false;
 		}
 		if ($scope.emailChangeSucceeded || $scope.usernameChangeSucceeded || $scope.profileChangeSucceeded )
 		{
+      $scope.showInfoAlert = false;
 			$scope.showSuccessAlert = true;
 			if ($scope.emailChangeSucceeded)
 			{
@@ -68,20 +75,20 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
 				$scope.successTextAlert += "Profile picture change succeded."
 			}
 		}
-		
+
 		$scope.emailChangeSucceeded = null;
 		$scope.usernameChangeSucceeded = null;
 		$scope.profileChangeSucceeded = null;
-		
+
 	}
-	
+
 
 
     // switch flag
 	$scope.switchBool = function (value) {
         $scope[value] = !$scope[value];
     };
-	
+
     $scope.password = {
       newPass: '', //The newPass field value
       conPass: '' //The conPass field value
@@ -160,7 +167,7 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
             $scope.hasChangedProfile = true;
           };
           reader.readAsDataURL(file);
-		  
+
         } else {
           $scope.throwError('Could not upload image');
         }

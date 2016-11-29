@@ -41,7 +41,7 @@
             <br>
             <div class="form-group">
               <label class="sr-only" for="loginEmail">Email</label>
-              <input type="email" name="email" class="form-control" id="loginEmail" placeholder="Email" ng-model="user.email"  ng-change="emailChange()" required>
+              <input type="email" name="email" class="form-control" id="loginEmail" placeholder="Email" ng-model="user.email" required>
               <div ng-show="profile.$submitted || profile.email.$touched">
                 <span ng-show="profile.email.$error.required">Tell us your email.</span>
                 <span ng-show="profile.email.$error.email">This is not a valid email.</span>
@@ -49,7 +49,7 @@
             </div>
             <div class="form-group">
               <label class="sr-only" for="username">Display Name</label>
-              <input placeholder="Display Name" name="displayName" type="text" class="form-control" id="username" ng-model="user.username" ng-change="usernameChange()" required>
+              <input placeholder="Display Name" name="displayName" type="text" class="form-control" id="username" ng-model="user.username" required>
               <div ng-show="profile.$submitted || profile.displayName.$touched">
                 <div ng-show="profile.displayName.$error.required">Tell us your username.</div>
               </div>

@@ -4,9 +4,9 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
   function(UploadImage, User, $firebaseAuth, $firebaseObject, $scope, $location, $http) {
     $scope.user = User.getUser(); // User Object fields
     $scope.hasChangedProfile = false; // Flag to update user profile picture or not
-	$scope.emailChangeSucceeded = null;
-	$scope.usernameChangeSucceeded = null;
-	$scope.profileChangeSucceeded = null;
+    $scope.emailChangeSucceeded = null;
+    $scope.usernameChangeSucceeded = null;
+    $scope.profileChangeSucceeded = null;
 
     $scope.error = {
       message: "", //Message to be shown in form
@@ -27,66 +27,71 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
     /**
      * Updates all user fields
      */
+
     $scope.updateUser = function() {
-      $scope.emailChange = function() {
+
+      if ($scope.profile.$pristine && !$scope.hadChangedProfile) {
+        $scope.successOrFailure();
+      }
+
+      if ($scope.profile.email.$dirty) {
         $scope.changeEmail();
-      }
-      $scope.usernameChange = function() {
+      };
+
+      if ($scope.profile.displayName.$dirty) {
         $scope.changeUsername();
-      }
+      };
 
       if ($scope.hasChangedProfile) {
         $scope.changeProfilePicture();
         $scope.hasChangedProfile = false;
-      }
-	  $scope.successOrFailure();
+      };
     };
 
-	$scope.successTextAlert = "";
+
+    $scope.successTextAlert = "";
     $scope.showSuccessAlert = false;
-	$scope.failureTextAlert = "";
-	$scope.showFailureAlert = false;
-	$scope.infoTextAlert = "";
-	$scope.showInfoAlert = false;
+    $scope.failureTextAlert = "";
+    $scope.showFailureAlert = false;
+    $scope.infoTextAlert = "";
+    $scope.showInfoAlert = false;
 
-	$scope.successOrFailure = function () {
-		$scope.successTextAlert = "";
-		$scope.failureTextAlert = "";
+    $scope.successOrFailure = function() {
+      $scope.successTextAlert = "";
+      $scope.failureTextAlert = "";
 
-		if ($scope.emailChangeSucceeded == null && $scope.usernameChangeSucceeded == null && $scope.profileChangeSucceeded == null){
-			$scope.infoTextAlert = "No fields were updated as no changes were detected";
-			$scope.showInfoAlert = true;
-      $scope.showSuccessAlert = false;
-		}
-		if ($scope.emailChangeSucceeded || $scope.usernameChangeSucceeded || $scope.profileChangeSucceeded )
-		{
-      $scope.showInfoAlert = false;
-			$scope.showSuccessAlert = true;
-			if ($scope.emailChangeSucceeded)
-			{
-				$scope.successTextAlert += "Email change succeeded. "
-			}
-			if ($scope.usernameChangeSucceeded)
-			{
-				$scope.successTextAlert += "Username change succeeded. "
-			}
-			if ($scope.profileChangeSucceeded)
-			{
-				$scope.successTextAlert += "Profile picture change succeded."
-			}
-		}
+      if ($scope.emailChangeSucceeded == null && $scope.usernameChangeSucceeded == null && $scope.profileChangeSucceeded == null) {
+        $scope.infoTextAlert = "No fields were updated as no changes were detected";
+        $scope.showInfoAlert = true;
+        $scope.showSuccessAlert = false;
+      }
+      if ($scope.emailChangeSucceeded || $scope.usernameChangeSucceeded || $scope.profileChangeSucceeded) {
+        $scope.showInfoAlert = false;
+        $scope.showSuccessAlert = true;
+        if ($scope.emailChangeSucceeded) {
+          $scope.successTextAlert += "Email change succeeded. "
+        }
+        if ($scope.usernameChangeSucceeded) {
+          $scope.successTextAlert += "Username change succeeded. "
+        }
+        if ($scope.profileChangeSucceeded) {
+          $scope.successTextAlert += "Profile picture change succeded."
+        }
+        $scope.profile.$setPristine();
+      }
 
-		$scope.emailChangeSucceeded = null;
-		$scope.usernameChangeSucceeded = null;
-		$scope.profileChangeSucceeded = null;
+      $scope.emailChangeSucceeded = null;
+      $scope.usernameChangeSucceeded = null;
+      $scope.profileChangeSucceeded = null;
 
-	}
+
+    }
 
 
 
     // switch flag
-	$scope.switchBool = function (value) {
-        $scope[value] = !$scope[value];
+    $scope.switchBool = function(value) {
+      $scope[value] = !$scope[value];
     };
 
     $scope.password = {
@@ -104,12 +109,12 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
         document.getElementById('passwordToggle').textContent = "Change";
         $scope.password.newPass = null;
         $scope.password.oldPass = null;
-		$scope.showSuccessAlert = true;
-		$scope.successTextAlert = "Password changed successfully";
+        $scope.showSuccessAlert = true;
+        $scope.successTextAlert = "Password changed successfully";
       }).catch(function(error) {
         console.error("Error: ", error);
-		$scope.showFailureAlert = true;
-		$scope.failureTextAlert = "Couldn't update password, please try again";
+        $scope.showFailureAlert = true;
+        $scope.failureTextAlert = "Couldn't update password, please try again";
       });
     };
 
@@ -119,7 +124,8 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
     $scope.changeEmail = function() {
       User.updateEmail($scope.user.email).then(function() {
         console.log("Email changed successfully!");
-		$scope.emailChangeSucceeded = true;
+        $scope.emailChangeSucceeded = true;
+        $scope.successOrFailure();
       }).catch(function(error) {
         console.error("Error: ", error);
       });
@@ -130,7 +136,8 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
      */
     $scope.changeUsername = function() {
       User.updateUsername($scope.user.username);
-	  $scope.usernameChangeSucceeded = true;
+      $scope.usernameChangeSucceeded = true;
+      $scope.successOrFailure();
     };
 
     /**
@@ -140,7 +147,7 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
       var picture = $('#uploadedPicture').attr('src');
       if (picture) {
         User.updateProfilePicture(picture);
-		$scope.profileChangeSucceeded = true;
+        $scope.profileChangeSucceeded = true;
       }
     };
 

@@ -84,6 +84,7 @@ authFactory.factory("User", ["$firebaseAuth", "$firebaseObject", function($fireb
     updateProfilePicture: function(picture) {
       var storage = firebase.storage();
       var pathReference = storage.ref('images/profile/' + $firebaseAuth().$getAuth().uid);
+	  var uploadSuccess = true;
 
       //Generate large image
       this.resizeImage(picture, 350, 350).then(function(encodedImg) {
@@ -97,6 +98,7 @@ authFactory.factory("User", ["$firebaseAuth", "$firebaseObject", function($fireb
           function(error) {
             //Fail silently
             //console.log(error);
+			uploadSuccess = false;
           },
           function() {
             console.log(uploadTask.snapshot.downloadURL);
@@ -128,7 +130,12 @@ authFactory.factory("User", ["$firebaseAuth", "$firebaseObject", function($fireb
         //Fail silently
         //console.log(error);
       });
-
+		if (uploadSuccess){
+		  return true;
+	  }
+	  else {
+		  return false;
+		  }
     },
 
     resizeImage: function(img, width, height) {

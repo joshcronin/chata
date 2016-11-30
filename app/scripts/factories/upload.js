@@ -38,5 +38,52 @@ uploadFactory.factory("UploadImage", [function() {
       }
       return false;
     },
+
+    resizeImage: function(img, width, height) {
+      //Return a promise
+      return new window.Promise(function(resolve, reject) {
+        // create an off-screen canvas
+        var canvas = document.createElement('canvas'),
+          ctx = canvas.getContext('2d');
+
+        // set its dimension to target size
+        canvas.width = width;
+        canvas.height = height;
+
+        var image = new Image();
+        image.onload = function() {
+          //Check width and height of image
+          var nativeWidth = this.width,
+            nativeHeight = this.height;
+          var desiredWidth = 0,
+            desiredHeight = 0;
+          var offset = {
+            left: 0,
+            top: 0
+          };
+
+          //Scale and position image in canvase
+          if (nativeWidth == nativeHeight) {
+            desiredHeight = height;
+            desiredWidth = width;
+          } else if (nativeWidth > nativeHeight) {
+            desiredHeight = height;
+            desiredWidth = (nativeWidth / (nativeHeight / height));
+            offset.left = -((desiredWidth - width) / 2);
+          } else {
+            desiredWidth = width;
+            desiredHeight = (nativeHeight / (nativeWidth / width));
+            offset.top = -((desiredHeight - height) / 2);
+          }
+
+          ctx.drawImage(image, offset.left, offset.top, desiredWidth, desiredHeight);
+          resolve(canvas.toDataURL());
+        };
+        image.onerror = function(e) {
+          reject(Error("There was a problem"));
+        };
+        image.src = img;
+      });
+    }
   };
 }]);

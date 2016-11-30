@@ -146,23 +146,13 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
     $scope.changeProfilePicture = function() {
       var picture = $('#uploadedPicture').attr('src');
       if (picture) {
-        var uploadedProfilePic = User.updateProfilePicture(picture, User.updateProfilePicture(picture, $scope.uploadProfilePictureCallback.bind(this)));
+        User.updateProfilePicture(picture).then(function(snap) {
+          // Toggle the message here 
+          debugger;
+        }).catch(function(err) {
+          console.log(err);
+        });
       }
-    };
-
-    $scope.uploadProfilePictureCallback = function(response) {
-      console.log(response);
-      // Toggle user response messages here based on response of success or failure
-	  if (response){
-	 if (response == 'success'){
-		 $scope.profileChangeSucceeded = true;
-	 }
-	 else {
-		 $scope.profileChangeSucceeded = false;
-	 }
-	  }
-	 
-	 $scope.successOrFailure();
     };
 
     $scope.getFile = function() {

@@ -126,12 +126,6 @@ authFactory.factory("User", ["$firebaseAuth", "$firebaseObject", function($fireb
       }).catch(function(error) {
         callback('failure');
       });
-		if (uploadSuccess){
-		  return true;
-	  }
-	  else {
-		  return false;
-		  }
     },
 
     resizeImage: function(img, width, height) {

@@ -153,6 +153,16 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
     $scope.uploadProfilePictureCallback = function(response) {
       console.log(response);
       // Toggle user response messages here based on response of success or failure
+	  if (response){
+	 if (response == 'success'){
+		 $scope.profileChangeSucceeded = true;
+	 }
+	 else {
+		 $scope.profileChangeSucceeded = false;
+	 }
+	  }
+	 
+	 $scope.successOrFailure();
     };
 
     $scope.getFile = function() {

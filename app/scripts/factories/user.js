@@ -79,12 +79,11 @@ authFactory.factory("User", ["$firebaseAuth", "$firebaseObject", function($fireb
     },
 
     /**
-     * @param (String) Base64 picture reference 
+     * @param (String) Base64 picture reference
      */
-    updateProfilePicture: function(picture) {
+    updateProfilePicture: function(picture, callback) {
       var storage = firebase.storage();
       var pathReference = storage.ref('images/profile/' + $firebaseAuth().$getAuth().uid);
-	  var uploadSuccess = true;
 
       //Generate large image
       this.resizeImage(picture, 350, 350).then(function(encodedImg) {
@@ -96,17 +95,15 @@ authFactory.factory("User", ["$firebaseAuth", "$firebaseObject", function($fireb
             console.log(snapshot);
           },
           function(error) {
-            //Fail silently
-            //console.log(error);
-			uploadSuccess = false;
+            callback('failure');
           },
           function() {
             console.log(uploadTask.snapshot.downloadURL);
+            callback('success');
           }
         );
       }).catch(function(error) {
-        //Fail silently
-        //console.log(error);
+        callback('failure');
       });
 
       //Generate small image
@@ -119,16 +116,15 @@ authFactory.factory("User", ["$firebaseAuth", "$firebaseObject", function($fireb
             console.log(snapshot);
           },
           function(error) {
-            //Fail silently
-            //console.log(error);
+            callback('failure');
           },
           function() {
             console.log(uploadTask.snapshot.downloadURL);
+            callback('success');
           }
         );
       }).catch(function(error) {
-        //Fail silently
-        //console.log(error);
+        callback('failure');
       });
 		if (uploadSuccess){
 		  return true;

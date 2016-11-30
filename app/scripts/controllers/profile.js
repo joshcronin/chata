@@ -148,9 +148,11 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
       if (picture) {
         User.updateProfilePicture(picture).then(function(snap) {
           // Toggle the message here 
+		  $scope.profileChangeSucceeded = true;
           debugger;
         }).catch(function(err) {
           console.log(err);
+		  $scope.profileChangeSucceeded = false;
         });
       }
     };

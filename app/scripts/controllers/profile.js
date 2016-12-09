@@ -29,6 +29,9 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
      */
 
     $scope.updateUser = function() {
+      $scope.cancelError();
+      $scope.showInfoAlert = false;
+      $scope.showSuccessAlert = false;
 
       if ($scope.profile.$pristine && !$scope.hadChangedProfile) {
         $scope.successOrFailure();
@@ -128,6 +131,7 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
         $scope.successOrFailure();
       }).catch(function(error) {
         console.error("Error: ", error);
+        $scope.throwError('Email was not changed');
       });
     };
 
@@ -147,12 +151,13 @@ profileController.controller("profile", ['UploadImage', 'User', '$firebaseAuth',
       var picture = $('#uploadedPicture').attr('src');
       if (picture) {
         User.updateProfilePicture(picture).then(function(snap) {
-          // Toggle the message here 
-		  $scope.profileChangeSucceeded = true;
-          debugger;
+          // Toggle the message here
+          $scope.profileChangeSucceeded = true;
+          $scope.successOrFailure();
         }).catch(function(err) {
           console.log(err);
-		  $scope.profileChangeSucceeded = false;
+          $scope.profileChangeSucceeded = false;
+          $scope.successOrFailure();
         });
       }
     };

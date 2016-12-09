@@ -1,7 +1,7 @@
 var userFactory = angular.module('userFactory', []);
 
 // User model
-authFactory.factory("User", ["$firebaseAuth", "$firebaseObject", function($firebaseAuth, $firebaseObject) {
+authFactory.factory("User", ["UploadImage", "$firebaseAuth", "$firebaseObject", function(UploadImage, $firebaseAuth, $firebaseObject) {
   return {
     /**
      * @return {Object} User with email, username and profileURl
@@ -79,101 +79,25 @@ authFactory.factory("User", ["$firebaseAuth", "$firebaseObject", function($fireb
     },
 
     /**
-     * @param (String) Base64 picture reference 
+     * @param (String) Base64 picture reference
      */
     updateProfilePicture: function(picture) {
       var storage = firebase.storage();
       var pathReference = storage.ref('images/profile/' + $firebaseAuth().$getAuth().uid);
 
       //Generate large image
-      this.resizeImage(picture, 350, 350).then(function(encodedImg) {
-        // Uploads the file
-        var uploadTask = pathReference.child('profile').putString(encodedImg.split(',')[1], 'base64');
-
-        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-          function(snapshot) {
-            console.log(snapshot);
-          },
-          function(error) {
-            //Fail silently
-            //console.log(error);
-          },
-          function() {
-            console.log(uploadTask.snapshot.downloadURL);
-          }
-        );
-      }).catch(function(error) {
-        //Fail silently
-        //console.log(error);
-      });
-
-      //Generate small image
-      this.resizeImage(picture, 96, 96).then(function(encodedImg) {
-        // Uploads the file
-        var uploadTask = pathReference.child('profile_thumb').putString(encodedImg.split(',')[1], 'base64');
-
-        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED,
-          function(snapshot) {
-            console.log(snapshot);
-          },
-          function(error) {
-            //Fail silently
-            //console.log(error);
-          },
-          function() {
-            console.log(uploadTask.snapshot.downloadURL);
-          }
-        );
-      }).catch(function(error) {
-        //Fail silently
-        //console.log(error);
-      });
-
+      return UploadImage.resizeImage(picture, 350, 350).then(function(encodedImg) {
+          // Uploads the file
+          return pathReference.child('profile').putString(encodedImg.split(',')[1], 'base64');
+        })
+        .then((snap) => {
+          return UploadImage.resizeImage(picture, 96, 96);
+        })
+        .then(function(encodedImg) {
+          // Uploads the file
+          return pathReference.child('profile_thumb').putString(encodedImg.split(',')[1], 'base64');
+        });
     },
-
-    resizeImage: function(img, width, height) {
-      //Return a promise
-      return new window.Promise(function(resolve, reject) {
-        // create an off-screen canvas
-        var canvas = document.createElement('canvas'),
-        ctx = canvas.getContext('2d');
-
-        // set its dimension to target size
-        canvas.width = width;
-        canvas.height = height;
-
-        var image = new Image();
-        image.onload = function() {
-          //Check width and height of image
-          var nativeWidth = this.width,
-              nativeHeight = this.height;
-          var desiredWidth = 0,
-              desiredHeight = 0;
-          var offset = {left: 0, top: 0};
-
-          //Scale and position image in canvase
-          if (nativeWidth == nativeHeight) {
-            desiredHeight = height;
-            desiredWidth = width;
-          } else if (nativeWidth > nativeHeight) {
-            desiredHeight = height;
-            desiredWidth = (nativeWidth / (nativeHeight / height));
-            offset.left = -((desiredWidth - width) / 2);
-          } else {
-            desiredWidth = width;
-            desiredHeight = (nativeHeight / (nativeWidth / width));
-            offset.top = -((desiredHeight - height) / 2);
-          }
-
-          ctx.drawImage(image, offset.left, offset.top, desiredWidth, desiredHeight);
-          resolve(canvas.toDataURL());
-        };
-        image.onerror = function(e) {
-          reject(Error("There was a problem"));
-        };
-        image.src = img;
-      });
-    }
   };
 
 }]);
